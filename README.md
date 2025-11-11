@@ -1,249 +1,235 @@
 # 📚 BookVault - Biblioteca Digital Premium
 
-> Uma plataforma moderna de biblioteca digital inspirada no Google Books, construída com Laravel 11 e Filament 3.
+Uma plataforma moderna de biblioteca digital construída com Laravel 12, Livewire 3 e Filament Admin, inspirada no Google Books.
 
-## 🎯 Visão Geral
+![Laravel](https://img.shields.io/badge/Laravel-12-FF2D20?logo=laravel)
+![Livewire](https://img.shields.io/badge/Livewire-3-4E56A6?logo=livewire)
+![Filament](https://img.shields.io/badge/Filament-3-FDAE33)
+![TailwindCSS](https://img.shields.io/badge/Tailwind-3-06B6D4?logo=tailwindcss)
 
-**BookVault** é uma plataforma de biblioteca digital profissional que permite gerenciar e publicar livros online com controle granular de acesso. Perfeita para:
+## ✨ Features
 
-- Editoras digitais
-- Plataformas educacionais
-- Bibliotecas corporativas
-- Criadores de conteúdo
-- Cursos online
+### Para Leitores
+- 📖 **Interface de Leitura Premium** - Design minimalista inspirado no Google Books
+- 🎨 **Modo Escuro** - Leitura confortável em qualquer ambiente
+- 🔍 **Busca Avançada** - Encontre livros por título, autor ou descrição
+- 📊 **Progresso de Leitura** - Acompanhe seu progresso em tempo real
+- 🎯 **Navegação Intuitiva** - Índice interativo e navegação entre capítulos
+- 📱 **Totalmente Responsivo** - Funciona perfeitamente em mobile, tablet e desktop
+- 🔤 **Tamanho de Fonte Ajustável** - Personalize sua experiência de leitura
+- 🔐 **Sistema de Acesso Único** - Cada usuário acessa apenas seus livros autorizados
 
-## ✨ Features Implementadas
+### Para Administradores
+- ⚡ **Painel Filament Admin** - Interface administrativa profissional
+- 📚 **Gerenciamento de Livros** - CRUD completo com upload de capas
+- 📝 **Gerenciamento de Capítulos** - Organização e edição de conteúdo
+- 👥 **Controle de Usuários** - Gerenciamento de acessos e permissões
+- 🔑 **Sistema de Acessos** - Conceda/revogue acesso a livros por usuário
+- ⏰ **Acessos Temporários** - Defina data de expiração para acessos
 
-### 🔐 Autenticação & Autorização
-- Laravel Breeze para auth completo (login, registro, recuperação de senha)
-- Sistema de roles com Spatie Permission (admin, reader)
-- Controle de acesso granular por livro
-- Expiração configurável de acessos
+## 🚀 Stack Tecnológica
 
-### 📖 Gerenciamento de Livros
-- CRUD completo de livros
-- Capítulos ordenados com suporte a rich content
-- Slugs automáticos (SEO-friendly)
-- Status de publicação
-- Capa de livro (cover image)
-- Metadata completa (autor, descrição, etc.)
+- **Backend:** Laravel 12 (PHP 8.4)
+- **Frontend:** Livewire 3 + Alpine.js
+- **UI:** Tailwind CSS
+- **Admin Panel:** Filament 3
+- **Database:** PostgreSQL
+- **Auth:** Laravel Breeze
 
-### 👨‍💼 Painel Admin (Filament 3)
-- Interface moderna e responsiva
-- Gerenciamento de livros e capítulos
-- Controle de acessos de usuários
-- Dashboard com estatísticas
-- Upload de imagens
+## 📋 Requisitos
 
-### 🎨 Design Inspirado no Google Books
-- Interface limpa e profissional
-- Modo escuro/claro (Tailwind CSS)
-- Responsivo (mobile-first)
-- Tipografia otimizada para leitura
+- PHP 8.4+
+- PostgreSQL 13+
+- Composer 2.8+
+- Node.js 18+ & NPM
 
-## 🛠️ Stack Tecnológica
+## 🛠️ Instalação
 
-**Backend:**
-- Laravel 11 (PHP 8.4)
-- PostgreSQL
-- Eloquent ORM
-
-**Frontend:**
-- Blade Templates
-- Tailwind CSS
-- Alpine.js
-- Vite
-
-**Admin Panel:**
-- Filament 3
-- Livewire 3
-
-**Packages:**
-- Laravel Breeze (Auth)
-- Spatie Laravel Permission (Roles)
-- Filament Panel Builder
-
-## 🚀 Instalação
-
-### Pré-requisitos
-
-- PHP 8.2+
-- Composer
-- PostgreSQL (ou MySQL/SQLite)
-- Node.js & NPM
-
-### Passos
-
+### 1. Clone o repositório
 ```bash
-# Clone o repositório
-git clone <seu-repo>
+git clone <repository-url>
 cd book
+```
 
-# Instale dependências PHP
+### 2. Instale as dependências
+```bash
 composer install
-
-# Instale dependências Node
 npm install
+```
 
-# Configure o .env
+### 3. Configure o ambiente
+```bash
 cp .env.example .env
 php artisan key:generate
+```
 
-# Configure o banco de dados no .env
+### 4. Configure o banco de dados no `.env`
+```env
 DB_CONNECTION=pgsql
 DB_HOST=127.0.0.1
 DB_PORT=5432
 DB_DATABASE=bookvault
 DB_USERNAME=postgres
-DB_PASSWORD=
+DB_PASSWORD=sua_senha
+```
 
-# Execute as migrations
+### 5. Crie o banco de dados
+```bash
+createdb bookvault
+# ou
+psql -U postgres -c "CREATE DATABASE bookvault;"
+```
+
+### 6. Execute as migrations
+```bash
 php artisan migrate
+```
 
-# Crie o usuário admin e dados de exemplo
-php artisan db:seed --class=AdminSeeder
-
-# Compile assets
+### 7. Compile os assets
+```bash
 npm run build
+# ou para desenvolvimento
+npm run dev
+```
 
-# Inicie o servidor
+### 8. Inicie o servidor
+```bash
 php artisan serve
 ```
 
-## 🔑 Credenciais Padrão
+Acesse: `http://localhost:8000`
 
-Após executar o seeder, você pode acessar:
-
-**Admin Panel:** `http://localhost:8000/admin`
-- Email: `admin@bookvault.com`
-- Password: `password`
-
-**Frontend:** `http://localhost:8000`
-
-## 📁 Estrutura do Projeto
-
-```
-app/
-├── Filament/
-│   └── Resources/        # Admin resources
-├── Models/
-│   ├── Book.php         # Modelo de livro
-│   ├── Chapter.php      # Modelo de capítulo
-│   ├── BookAccess.php   # Modelo de acesso
-│   └── User.php
-└── Http/
-    └── Controllers/     # Controllers do frontend
-
-database/
-├── migrations/          # Database schema
-└── seeders/
-    └── AdminSeeder.php  # Dados iniciais
-
-resources/
-├── views/              # Blade templates
-└── css/               # Tailwind CSS
-
-routes/
-├── web.php            # Rotas públicas
-└── auth.php           # Rotas de auth
-```
-
-## 🎨 Modelos de Dados
-
-### Book
-```php
-- id
-- title (string)
-- author (string)
-- description (text, nullable)
-- cover_url (string, nullable)
-- slug (string, unique)
-- is_published (boolean)
-- timestamps
-```
-
-### Chapter
-```php
-- id
-- book_id (foreign key)
-- title (string)
-- content (longtext)
-- order (integer)
-- slug (string)
-- timestamps
-```
-
-### BookAccess
-```php
-- id
-- user_id (foreign key)
-- book_id (foreign key)
-- granted_at (timestamp)
-- expires_at (timestamp, nullable)
-- timestamps
-```
-
-## 🔧 Comandos Úteis
+## 👤 Criar Usuário Admin
 
 ```bash
-# Criar novo livro via Tinker
-php artisan tinker
->>> App\Models\Book::create([
-    'title' => 'Meu Livro',
-    'author' => 'Autor',
-    'description' => 'Descrição',
-    'is_published' => true
-]);
+php artisan make:filament-user
+```
 
-# Limpar cache
-php artisan optimize:clear
+Siga as instruções no terminal para criar o primeiro usuário administrador.
 
-# Recriar database
-php artisan migrate:fresh --seed
+## 📖 Como Usar
 
-# Compilar assets para produção
+### Painel Admin (Filament)
+
+Acesse: `http://localhost:8000/admin`
+
+**Gerenciar Livros:**
+1. Vá em "Books" no menu lateral
+2. Clique em "Create" para adicionar um novo livro
+3. Preencha: Título, Autor, Descrição, Slug, URL da Capa
+4. Marque "Is Published" para tornar o livro visível
+
+**Gerenciar Capítulos:**
+1. Vá em "Chapters" no menu lateral
+2. Crie capítulos vinculados a um livro
+3. Defina a ordem (1, 2, 3...) para sequência de leitura
+4. Cole o conteúdo do capítulo
+
+**Gerenciar Acessos:**
+1. Vá em "Book Accesses"
+2. Selecione o usuário e o livro
+3. Opcionalmente, defina uma data de expiração
+4. Salve para conceder acesso
+
+### Interface de Leitura
+
+**Biblioteca (`/library`):**
+- Visualize todos os livros que você tem acesso
+- Use a busca para filtrar livros
+- Clique em um livro para começar a ler
+
+**Leitor (`/read/{slug}`):**
+- Navegue entre capítulos com as setas
+- Abra o índice para pular para qualquer capítulo
+- Ajuste o tamanho da fonte com os botões + e -
+- Clique na área de leitura para mostrar/ocultar controles
+- Acompanhe seu progresso na barra superior
+
+## 🗂️ Estrutura do Projeto
+
+```
+bookvault/
+├── app/
+│   ├── Filament/
+│   │   └── Resources/          # Resources do Filament Admin
+│   │       ├── BookResource.php
+│   │       ├── ChapterResource.php
+│   │       └── BookAccessResource.php
+│   ├── Livewire/
+│   │   ├── Library/
+│   │   │   └── BookGrid.php    # Componente da Biblioteca
+│   │   └── Reader/
+│   │       └── BookReader.php  # Componente do Leitor
+│   └── Models/
+│       ├── Book.php            # Model de Livro
+│       ├── Chapter.php         # Model de Capítulo
+│       ├── BookAccess.php      # Model de Acesso
+│       └── User.php
+├── resources/
+│   └── views/
+│       ├── layouts/
+│       │   ├── app.blade.php   # Layout principal
+│       │   └── reader.blade.php # Layout do leitor
+│       └── livewire/
+│           ├── library/
+│           │   └── book-grid.blade.php
+│           └── reader/
+│               └── book-reader.blade.php
+└── database/
+    └── migrations/
+        ├── *_create_books_table.php
+        ├── *_create_chapters_table.php
+        └── *_create_book_accesses_table.php
+```
+
+## 🎨 Design
+
+O design foi inspirado no **Google Books** com foco em:
+- ✅ Tipografia premium (Literata para leitura, Inter para UI)
+- ✅ Espaçamento generoso para conforto visual
+- ✅ Animações suaves e transições elegantes
+- ✅ Modo escuro nativo
+- ✅ Interface limpa e minimalista
+
+## 🔐 Segurança
+
+- ✅ Autenticação obrigatória (Laravel Breeze)
+- ✅ Verificação de acesso por livro
+- ✅ Proteção CSRF
+- ✅ Prepared statements (Eloquent ORM)
+- ✅ Validação de inputs
+- ✅ Sanitização de outputs
+
+## 📱 Responsividade
+
+- 📱 **Mobile:** Layout single-column, navegação touch-friendly
+- 📱 **Tablet:** Grid otimizado, controles adaptados
+- 💻 **Desktop:** Grid 6 colunas, leitura confortável
+
+## 🚀 Deploy
+
+### Vercel/Netlify (Frontend)
+```bash
 npm run build
 ```
 
-## 🌟 Próximas Features
+### Heroku/DigitalOcean (Full Stack)
+1. Configure as variáveis de ambiente
+2. Execute migrations: `php artisan migrate --force`
+3. Compile assets: `npm run build`
 
-- [ ] **Leitor Estilo Google Books**
-  - Navegação fluida entre capítulos
-  - Barra de progresso
-  - Busca full-text
-  - Highlights e anotações
+## 📝 Próximos Passos
 
-- [ ] **Importador de Conteúdo**
-  - Suporte a DOCX
-  - Suporte a EPUB
-  - Suporte a Markdown
-  - Conversão automática
+Para começar a usar o BookVault:
 
-- [ ] **Biblioteca Pública**
-  - Grid de livros com capas
-  - Filtros e busca
-  - Categorias e tags
-  - Recomendações
-
-- [ ] **Analytics**
-  - Tempo de leitura
-  - Capítulos mais lidos
-  - Usuários ativos
-  - Dashboard de métricas
-
-- [ ] **PWA**
-  - Leitura offline
-  - Instalável
-  - Push notifications
-
-## 📝 Licença
-
-Este projeto é open-source sob a licença MIT.
-
-## 👨‍💻 Desenvolvido com
-
-Laravel 11 • Filament 3 • Tailwind CSS • PostgreSQL
+1. ✅ Crie um usuário admin: `php artisan make:filament-user`
+2. ✅ Acesse o admin: `http://localhost:8000/admin`
+3. ✅ Cadastre seu primeiro livro
+4. ✅ Adicione capítulos ao livro
+5. ✅ Crie um usuário leitor (via registro ou admin)
+6. ✅ Conceda acesso ao livro para o usuário
+7. ✅ Faça login como leitor e comece a ler!
 
 ---
 
-**Made with ❤️ by Claude & Team**
+**Desenvolvido com ❤️ usando Laravel, Livewire e Filament**

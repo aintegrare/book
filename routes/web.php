@@ -1,20 +1,27 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Livewire\Library\BookGrid;
+use App\Livewire\Reader\BookReader;
 use Illuminate\Support\Facades\Route;
 
+// Redirecionar home para library
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('library');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Biblioteca (Dashboard principal)
+Route::get('/library', BookGrid::class)
+    ->middleware(['auth', 'verified'])
+    ->name('library');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+// Reader (Leitor de Livros)
+Route::get('/read/{slug}', BookReader::class)
+    ->middleware(['auth', 'verified'])
+    ->name('reader');
+
+// Profile
+Route::view('profile', 'profile')
+    ->middleware(['auth'])
+    ->name('profile');
 
 require __DIR__.'/auth.php';
