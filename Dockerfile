@@ -77,4 +77,4 @@ exec php artisan serve --host=0.0.0.0 --port=${PORT:-8000}' > /usr/local/bin/sta
     && chmod +x /usr/local/bin/start.sh
 
 # Start application
-CMD ["/usr/local/bin/start.sh"]
+ENTRYPOINT ["/bin/bash", "/usr/local/bin/start.sh"]
