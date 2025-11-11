@@ -7,19 +7,18 @@
 
         <title>{{ config('app.name', 'Laravel') }} - Reader</title>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=literata:400,500,600,700|inter:400,500,600&display=swap" rel="stylesheet" />
+        <!-- Material Design CSS -->
+        <link rel="stylesheet" href="{{ asset('css/material-base.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/material-typography.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/material-components.css') }}">
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
         <style>
-            body {
+            /* Reading Font Override - Literata for better reading experience */
+            .reading-content {
                 font-family: 'Literata', 'Georgia', serif;
-            }
-            .font-sans {
-                font-family: 'Inter', 'system-ui', sans-serif;
             }
         </style>
     </head>

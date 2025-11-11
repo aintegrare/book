@@ -1,5 +1,5 @@
-<div class="min-h-screen bg-white dark:bg-gray-900" x-data="{ showToolbar: true }">
-    {{-- Toolbar Superior --}}
+<div class="min-h-screen md-surface" x-data="{ showToolbar: true }">
+    {{-- Toolbar Superior - Material Design --}}
     <div
         x-show="showToolbar"
         x-transition:enter="transform transition ease-in-out duration-300"
@@ -8,20 +8,20 @@
         x-transition:leave="transform transition ease-in-out duration-300"
         x-transition:leave-start="translate-y-0"
         x-transition:leave-end="-translate-y-full"
-        class="fixed top-0 left-0 right-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 z-50 shadow-lg"
+        class="fixed top-0 left-0 right-0 md-surface-container md-elevation-2 z-50"
     >
         <div class="max-w-5xl mx-auto px-4 py-3">
             <div class="flex items-center justify-between">
                 {{-- Voltar --}}
                 <div class="flex items-center space-x-4">
-                    <a href="{{ route('library') }}" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400">
+                    <a href="{{ route('library') }}" class="md-icon-button">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                         </svg>
                     </a>
                     <div>
-                        <h1 class="font-semibold text-gray-900 dark:text-white">{{ $book->title }}</h1>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ $book->author }}</p>
+                        <h1 class="md-title-medium" style="color: var(--md-sys-color-on-surface);">{{ $book->title }}</h1>
+                        <p class="md-body-small" style="color: var(--md-sys-color-on-surface-variant);">{{ $book->author }}</p>
                     </div>
                 </div>
 
@@ -30,7 +30,7 @@
                     {{-- Índice --}}
                     <button
                         wire:click="toggleToc"
-                        class="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
+                        class="md-icon-button"
                         title="Índice"
                     >
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -41,7 +41,7 @@
                     {{-- Diminuir Fonte --}}
                     <button
                         wire:click="decreaseFontSize"
-                        class="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
+                        class="md-icon-button"
                         title="Diminuir fonte"
                     >
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -52,7 +52,7 @@
                     {{-- Aumentar Fonte --}}
                     <button
                         wire:click="increaseFontSize"
-                        class="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
+                        class="md-icon-button"
                         title="Aumentar fonte"
                     >
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -62,16 +62,16 @@
                 </div>
             </div>
 
-            {{-- Barra de Progresso --}}
+            {{-- Barra de Progresso - Material Design --}}
             <div class="mt-3">
-                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1">
-                    <div class="bg-indigo-600 h-1 rounded-full transition-all" style="width: {{ $progress }}%"></div>
+                <div class="md-progress-linear">
+                    <div class="md-progress-linear-bar" style="width: {{ $progress }}%"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- Sidebar Table of Contents --}}
+    {{-- Sidebar Table of Contents - Material Design Navigation Drawer --}}
     <div
         x-show="$wire.showToc"
         @click.away="$wire.showToc = false"
@@ -81,12 +81,12 @@
         x-transition:leave="transform transition ease-in-out duration-300"
         x-transition:leave-start="translate-x-0"
         x-transition:leave-end="-translate-x-full"
-        class="fixed left-0 top-0 h-full w-80 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 z-40 shadow-2xl overflow-y-auto"
+        class="fixed left-0 top-0 h-full w-80 md-surface-container-low md-elevation-1 z-40 overflow-y-auto"
     >
         <div class="p-6">
             <div class="flex items-center justify-between mb-6">
-                <h2 class="text-xl font-bold text-gray-900 dark:text-white">Índice</h2>
-                <button wire:click="toggleToc" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                <h2 class="md-headline-small" style="color: var(--md-sys-color-on-surface);">Índice</h2>
+                <button wire:click="toggleToc" class="md-icon-button">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -97,14 +97,12 @@
                 @foreach($chapters as $chapter)
                     <button
                         wire:click="loadChapter({{ $chapter->id }})"
-                        class="w-full text-left px-4 py-3 rounded-lg transition-colors
-                            {{ $currentChapter->id === $chapter->id
-                                ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 font-medium'
-                                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}"
+                        class="w-full text-left md-navigation-item
+                            {{ $currentChapter->id === $chapter->id ? 'active' : '' }}"
                     >
                         <div class="flex items-start">
-                            <span class="text-sm mr-2 text-gray-400">{{ $chapter->order }}.</span>
-                            <span class="flex-1 text-sm">{{ $chapter->title }}</span>
+                            <span class="md-body-small mr-2" style="color: var(--md-sys-color-on-surface-variant);">{{ $chapter->order }}.</span>
+                            <span class="flex-1 md-body-medium">{{ $chapter->title }}</span>
                         </div>
                     </button>
                 @endforeach
@@ -142,20 +140,18 @@
         </article>
     </div>
 
-    {{-- Navegação Inferior --}}
-    <div class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 z-40">
+    {{-- Navegação Inferior - Material Design --}}
+    <div class="fixed bottom-0 left-0 right-0 md-surface-container md-elevation-2 z-40">
         <div class="max-w-5xl mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
                 {{-- Anterior --}}
                 <button
                     wire:click="previousChapter"
                     @if(!$hasPrevious) disabled @endif
-                    class="flex items-center space-x-2 px-6 py-2 rounded-lg transition-colors
-                        {{ $hasPrevious
-                            ? 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
-                            : 'text-gray-300 dark:text-gray-600 cursor-not-allowed' }}"
+                    class="md-button md-button-text"
+                    style="{{ !$hasPrevious ? 'opacity: 0.38;' : '' }}"
                 >
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                     </svg>
                     <span>Anterior</span>
@@ -163,10 +159,10 @@
 
                 {{-- Info do Capítulo --}}
                 <div class="text-center">
-                    <div class="text-sm font-medium text-gray-900 dark:text-white">
+                    <div class="md-body-medium" style="color: var(--md-sys-color-on-surface);">
                         {{ $currentChapter->title }}
                     </div>
-                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    <div class="md-body-small" style="color: var(--md-sys-color-on-surface-variant); margin-top: 4px;">
                         Capítulo {{ $currentChapter->order }} de {{ $chapters->count() }}
                     </div>
                 </div>
@@ -175,13 +171,11 @@
                 <button
                     wire:click="nextChapter"
                     @if(!$hasNext) disabled @endif
-                    class="flex items-center space-x-2 px-6 py-2 rounded-lg transition-colors
-                        {{ $hasNext
-                            ? 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
-                            : 'text-gray-300 dark:text-gray-600 cursor-not-allowed' }}"
+                    class="md-button md-button-text"
+                    style="{{ !$hasNext ? 'opacity: 0.38;' : '' }}"
                 >
                     <span>Próximo</span>
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                     </svg>
                 </button>
