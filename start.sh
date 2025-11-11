@@ -11,6 +11,10 @@ sleep 3
 echo "📦 Running migrations..."
 php artisan migrate --force --no-interaction || echo "⚠️  Migration failed, continuing..."
 
+# Run seeders (creates admin user)
+echo "🌱 Creating admin user..."
+php artisan db:seed --force --class=AdminUserSeeder || echo "⚠️  Seeding failed, continuing..."
+
 # Cache configuration
 echo "⚙️  Caching configuration..."
 php artisan config:cache
