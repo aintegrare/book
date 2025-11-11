@@ -44,6 +44,10 @@ RUN npm install
 # Copy application files
 COPY . .
 
+# Copy and make start script executable
+COPY start.sh /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/start.sh
+
 # Run composer scripts now
 RUN composer dump-autoload --optimize
 
@@ -56,25 +60,8 @@ RUN mkdir -p storage/framework/cache storage/framework/sessions storage/framewor
     && mkdir -p bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
-# Expose port (Render will override with $PORT)
+# Expose port
 EXPOSE 8000
 
-# Create startup script
-RUN echo '#!/bin/bash\n\
-set -e\n\
-echo "Starting BookVault..."\n\
-echo "Waiting for database..."\n\
-sleep 5\n\
-echo "Running migrations..."\n\
-php artisan migrate --force --no-interaction\n\
-echo "Caching configuration..."\n\
-php artisan config:clear\n\
-php artisan config:cache\n\
-php artisan route:cache\n\
-php artisan view:cache\n\
-echo "Starting server on port ${PORT:-8000}..."\n\
-exec php artisan serve --host=0.0.0.0 --port=${PORT:-8000}' > /usr/local/bin/start.sh \
-    && chmod +x /usr/local/bin/start.sh
-
-# Start application
-ENTRYPOINT ["/bin/bash", "/usr/local/bin/start.sh"]
+# Default command (Render will override this with Docker Command setting)
+CMD ["/bin/bash", "/usr/local/bin/start.sh"]
