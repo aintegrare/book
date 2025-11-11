@@ -1,59 +1,249 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 📚 BookVault - Biblioteca Digital Premium
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+> Uma plataforma moderna de biblioteca digital inspirada no Google Books, construída com Laravel 11 e Filament 3.
 
-## About Laravel
+## 🎯 Visão Geral
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+**BookVault** é uma plataforma de biblioteca digital profissional que permite gerenciar e publicar livros online com controle granular de acesso. Perfeita para:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Editoras digitais
+- Plataformas educacionais
+- Bibliotecas corporativas
+- Criadores de conteúdo
+- Cursos online
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## ✨ Features Implementadas
 
-## Learning Laravel
+### 🔐 Autenticação & Autorização
+- Laravel Breeze para auth completo (login, registro, recuperação de senha)
+- Sistema de roles com Spatie Permission (admin, reader)
+- Controle de acesso granular por livro
+- Expiração configurável de acessos
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### 📖 Gerenciamento de Livros
+- CRUD completo de livros
+- Capítulos ordenados com suporte a rich content
+- Slugs automáticos (SEO-friendly)
+- Status de publicação
+- Capa de livro (cover image)
+- Metadata completa (autor, descrição, etc.)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 👨‍💼 Painel Admin (Filament 3)
+- Interface moderna e responsiva
+- Gerenciamento de livros e capítulos
+- Controle de acessos de usuários
+- Dashboard com estatísticas
+- Upload de imagens
 
-## Laravel Sponsors
+### 🎨 Design Inspirado no Google Books
+- Interface limpa e profissional
+- Modo escuro/claro (Tailwind CSS)
+- Responsivo (mobile-first)
+- Tipografia otimizada para leitura
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 🛠️ Stack Tecnológica
 
-### Premium Partners
+**Backend:**
+- Laravel 11 (PHP 8.4)
+- PostgreSQL
+- Eloquent ORM
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+**Frontend:**
+- Blade Templates
+- Tailwind CSS
+- Alpine.js
+- Vite
 
-## Contributing
+**Admin Panel:**
+- Filament 3
+- Livewire 3
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+**Packages:**
+- Laravel Breeze (Auth)
+- Spatie Laravel Permission (Roles)
+- Filament Panel Builder
 
-## Code of Conduct
+## 🚀 Instalação
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Pré-requisitos
 
-## Security Vulnerabilities
+- PHP 8.2+
+- Composer
+- PostgreSQL (ou MySQL/SQLite)
+- Node.js & NPM
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Passos
 
-## License
+```bash
+# Clone o repositório
+git clone <seu-repo>
+cd book
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# Instale dependências PHP
+composer install
+
+# Instale dependências Node
+npm install
+
+# Configure o .env
+cp .env.example .env
+php artisan key:generate
+
+# Configure o banco de dados no .env
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=bookvault
+DB_USERNAME=postgres
+DB_PASSWORD=
+
+# Execute as migrations
+php artisan migrate
+
+# Crie o usuário admin e dados de exemplo
+php artisan db:seed --class=AdminSeeder
+
+# Compile assets
+npm run build
+
+# Inicie o servidor
+php artisan serve
+```
+
+## 🔑 Credenciais Padrão
+
+Após executar o seeder, você pode acessar:
+
+**Admin Panel:** `http://localhost:8000/admin`
+- Email: `admin@bookvault.com`
+- Password: `password`
+
+**Frontend:** `http://localhost:8000`
+
+## 📁 Estrutura do Projeto
+
+```
+app/
+├── Filament/
+│   └── Resources/        # Admin resources
+├── Models/
+│   ├── Book.php         # Modelo de livro
+│   ├── Chapter.php      # Modelo de capítulo
+│   ├── BookAccess.php   # Modelo de acesso
+│   └── User.php
+└── Http/
+    └── Controllers/     # Controllers do frontend
+
+database/
+├── migrations/          # Database schema
+└── seeders/
+    └── AdminSeeder.php  # Dados iniciais
+
+resources/
+├── views/              # Blade templates
+└── css/               # Tailwind CSS
+
+routes/
+├── web.php            # Rotas públicas
+└── auth.php           # Rotas de auth
+```
+
+## 🎨 Modelos de Dados
+
+### Book
+```php
+- id
+- title (string)
+- author (string)
+- description (text, nullable)
+- cover_url (string, nullable)
+- slug (string, unique)
+- is_published (boolean)
+- timestamps
+```
+
+### Chapter
+```php
+- id
+- book_id (foreign key)
+- title (string)
+- content (longtext)
+- order (integer)
+- slug (string)
+- timestamps
+```
+
+### BookAccess
+```php
+- id
+- user_id (foreign key)
+- book_id (foreign key)
+- granted_at (timestamp)
+- expires_at (timestamp, nullable)
+- timestamps
+```
+
+## 🔧 Comandos Úteis
+
+```bash
+# Criar novo livro via Tinker
+php artisan tinker
+>>> App\Models\Book::create([
+    'title' => 'Meu Livro',
+    'author' => 'Autor',
+    'description' => 'Descrição',
+    'is_published' => true
+]);
+
+# Limpar cache
+php artisan optimize:clear
+
+# Recriar database
+php artisan migrate:fresh --seed
+
+# Compilar assets para produção
+npm run build
+```
+
+## 🌟 Próximas Features
+
+- [ ] **Leitor Estilo Google Books**
+  - Navegação fluida entre capítulos
+  - Barra de progresso
+  - Busca full-text
+  - Highlights e anotações
+
+- [ ] **Importador de Conteúdo**
+  - Suporte a DOCX
+  - Suporte a EPUB
+  - Suporte a Markdown
+  - Conversão automática
+
+- [ ] **Biblioteca Pública**
+  - Grid de livros com capas
+  - Filtros e busca
+  - Categorias e tags
+  - Recomendações
+
+- [ ] **Analytics**
+  - Tempo de leitura
+  - Capítulos mais lidos
+  - Usuários ativos
+  - Dashboard de métricas
+
+- [ ] **PWA**
+  - Leitura offline
+  - Instalável
+  - Push notifications
+
+## 📝 Licença
+
+Este projeto é open-source sob a licença MIT.
+
+## 👨‍💻 Desenvolvido com
+
+Laravel 11 • Filament 3 • Tailwind CSS • PostgreSQL
+
+---
+
+**Made with ❤️ by Claude & Team**
