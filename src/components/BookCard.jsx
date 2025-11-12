@@ -54,7 +54,7 @@ const BookCard = ({ book }) => {
             {isUnlocked && (
               <button
                 onClick={handleShareClick}
-                className="absolute top-3 right-3 p-2 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-800 backdrop-blur-sm rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                className="absolute top-3 right-3 p-2 bg-white/95 dark:bg-gray-800/95 hover:bg-white dark:hover:bg-gray-800 backdrop-blur-sm rounded-lg shadow-md border border-gray-200 dark:border-gray-700 transition-all duration-200"
                 title="Compartilhar"
               >
                 <Link2 className="w-4 h-4 text-gray-700 dark:text-gray-300" />
