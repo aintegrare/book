@@ -15,6 +15,7 @@ import {
 import { useBooks } from '../contexts/BookContext';
 import booksData from '../data/books.json';
 import BookContentRenderer from '../components/BookContentRenderer';
+import BookCover from '../components/BookCover';
 import Toast from '../components/Toast';
 
 const BookReader = () => {
@@ -33,7 +34,7 @@ const BookReader = () => {
 
   const contentRef = useRef(null);
   const [book, setBook] = useState(null);
-  const [currentChapter, setCurrentChapter] = useState(0);
+  const [currentChapter, setCurrentChapter] = useState(-1); // -1 = cover page
   const [fontSize, setFontSize] = useState(() => {
     return parseInt(localStorage.getItem('readerFontSize') || '18');
   });
@@ -69,14 +70,14 @@ const BookReader = () => {
 
     // Load saved progress
     const savedProgress = progress[bookId];
-    if (savedProgress) {
+    if (savedProgress && savedProgress.chapterIndex >= 0) {
       setCurrentChapter(savedProgress.chapterIndex);
     }
   }, [bookId, unlockedBooks, navigate, progress]);
 
   // Update progress when chapter changes
   useEffect(() => {
-    if (book) {
+    if (book && currentChapter >= 0) {
       updateProgress(book.id, currentChapter, 0);
     }
   }, [currentChapter, book]);
@@ -187,7 +188,9 @@ const BookReader = () => {
     setIsTransitioning(true);
     setTimeout(() => {
       setCurrentChapter(index);
-      setShowSidebar(false);
+      if (window.innerWidth < 768) {
+        setShowSidebar(false);
+      }
       contentRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
       setTimeout(() => setIsTransitioning(false), 100);
     }, 150);
@@ -200,7 +203,7 @@ const BookReader = () => {
   };
 
   const previousChapter = () => {
-    if (currentChapter > 0) {
+    if (currentChapter > -1) {
       goToChapter(currentChapter - 1);
     }
   };
@@ -213,81 +216,83 @@ const BookReader = () => {
 
   if (!book) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-[#f8f6f0] dark:bg-[#1a1a1a]">
+      <div className="flex items-center justify-center min-h-screen bg-white dark:bg-gray-900">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-400"></div>
       </div>
     );
   }
 
-  const chapter = book.chapters[currentChapter];
+  const chapter = currentChapter >= 0 ? book.chapters[currentChapter] : null;
   const bookBookmarks = bookmarks[book.id] || [];
   const bookAnnotations = annotations[book.id] || [];
 
   return (
-    <div className="fixed inset-0 flex flex-col bg-[#f8f6f0] dark:bg-[#1a1a1a]">
+    <div className="fixed inset-0 flex flex-col bg-gray-50 dark:bg-gray-900">
       {/* Toast Notifications */}
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
 
-      {/* Header - Premium Google Books style */}
-      <header className="flex-shrink-0 bg-white/98 dark:bg-gray-900/98 backdrop-blur-md border-b border-gray-200/80 dark:border-gray-700/80 px-4 md:px-6 py-3 shadow-sm z-40">
+      {/* Header - Clean Material Design */}
+      <header className="flex-shrink-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 md:px-6 py-3 z-40">
         <div className="flex items-center justify-between max-w-7xl mx-auto">
-          <div className="flex items-center space-x-3 md:space-x-4">
+          <div className="flex items-center space-x-2 md:space-x-3">
             <button
               onClick={() => navigate('/')}
-              className="p-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all duration-200 hover:scale-105 active:scale-95"
-              title="Voltar (Esc)"
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+              title="Voltar"
             >
               <Home className="w-5 h-5 text-gray-600 dark:text-gray-400" />
             </button>
 
             <button
               onClick={() => setShowSidebar(!showSidebar)}
-              className="p-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all duration-200 hover:scale-105 active:scale-95"
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
               title="Índice (M)"
             >
               <Menu className="w-5 h-5 text-gray-600 dark:text-gray-400" />
             </button>
 
-            <div className="hidden md:block border-l border-gray-200 dark:border-gray-700 pl-4 ml-1">
-              <h1 className="font-serif text-base font-medium text-gray-900 dark:text-gray-100 line-clamp-1">
+            <div className="hidden md:block border-l border-gray-300 dark:border-gray-600 pl-4 ml-2">
+              <h1 className="font-serif text-base font-semibold text-gray-900 dark:text-gray-100 line-clamp-1">
                 {book.title}
               </h1>
-              <p className="text-xs text-gray-500 dark:text-gray-500">{book.author}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">{book.author}</p>
             </div>
           </div>
 
           <div className="flex items-center space-x-2">
             {/* Font Size Controls */}
-            <div className="hidden sm:flex items-center space-x-1">
-              <button
-                onClick={() => changeFontSize(-2)}
-                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all duration-200 hover:scale-105 active:scale-95"
-                title="Diminuir fonte"
-              >
-                <Type className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-              </button>
-              <span className="text-xs px-2 text-gray-500 min-w-[3rem] text-center font-medium">
-                {fontSize}px
-              </span>
-              <button
-                onClick={() => changeFontSize(2)}
-                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all duration-200 hover:scale-105 active:scale-95"
-                title="Aumentar fonte"
-              >
-                <Type className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-              </button>
-
-              <div className="w-px h-6 bg-gray-200 dark:bg-gray-700 mx-2"></div>
-            </div>
+            {currentChapter >= 0 && (
+              <div className="hidden sm:flex items-center space-x-1 border-r border-gray-300 dark:border-gray-600 pr-3 mr-2">
+                <button
+                  onClick={() => changeFontSize(-2)}
+                  className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                  title="Diminuir fonte"
+                >
+                  <Type className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                </button>
+                <span className="text-xs px-2 text-gray-500 min-w-[3rem] text-center">
+                  {fontSize}px
+                </span>
+                <button
+                  onClick={() => changeFontSize(2)}
+                  className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                  title="Aumentar fonte"
+                >
+                  <Type className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                </button>
+              </div>
+            )}
 
             {/* Bookmark Button */}
-            <button
-              onClick={handleAddBookmark}
-              className="p-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all duration-200 hover:scale-105 active:scale-95"
-              title="Adicionar marcador (B)"
-            >
-              <BookmarkPlus className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-            </button>
+            {currentChapter >= 0 && (
+              <button
+                onClick={handleAddBookmark}
+                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                title="Adicionar marcador (B)"
+              >
+                <BookmarkPlus className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+              </button>
+            )}
           </div>
         </div>
       </header>
@@ -298,49 +303,63 @@ const BookReader = () => {
           <>
             {/* Backdrop */}
             <div
-              className="fixed inset-0 bg-black/20 dark:bg-black/40 backdrop-blur-sm z-40 animate-fade-in md:hidden"
+              className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden"
               onClick={() => setShowSidebar(false)}
             />
 
-            <aside className="w-80 md:w-96 flex-shrink-0 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 overflow-y-auto shadow-2xl md:shadow-lg z-50 md:z-10 md:relative md:animate-none animate-slide-right">
-              <div className="p-6 md:p-8 space-y-8">
+            <aside className="w-80 md:w-96 flex-shrink-0 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 overflow-y-auto shadow-xl md:shadow-none z-50 md:z-10 md:relative">
+              <div className="p-6 space-y-8">
                 {/* Mobile header */}
-                <div className="flex items-center justify-between md:hidden mb-4">
-                  <h2 className="font-serif text-lg font-medium text-gray-900 dark:text-gray-100">Menu</h2>
+                <div className="flex items-center justify-between md:hidden pb-4 border-b border-gray-200 dark:border-gray-700">
+                  <h2 className="font-serif text-lg font-semibold text-gray-900 dark:text-gray-100">Índice</h2>
                   <button
                     onClick={() => setShowSidebar(false)}
-                    className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full"
+                    className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
                   >
                     <X className="w-5 h-5" />
                   </button>
                 </div>
 
+                {/* Cover Page Link */}
+                <div>
+                  <button
+                    onClick={() => goToChapter(-1)}
+                    className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${
+                      currentChapter === -1
+                        ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800'
+                        : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
+                    }`}
+                  >
+                    <div className="text-sm font-semibold">Capa</div>
+                  </button>
+                </div>
+
                 {/* Chapters */}
                 <div>
-                  <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-5 px-2 flex items-center">
-                    Índice
+                  <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-4 px-2">
+                    Capítulos
                   </h3>
-                  <div className="space-y-2">
+                  <div className="space-y-1">
                     {book.chapters.map((ch, index) => (
                       <button
                         key={index}
                         onClick={() => goToChapter(index)}
-                        className={`w-full text-left px-4 py-3.5 rounded-xl transition-all duration-200 group ${
+                        className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${
                           index === currentChapter
-                            ? 'bg-blue-50 dark:bg-blue-900/20 text-gray-900 dark:text-gray-100 shadow-sm'
-                            : 'hover:bg-gray-50 dark:hover:bg-gray-800/50 text-gray-700 dark:text-gray-300'
+                            ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800'
+                            : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
                         }`}
                       >
                         <div className="flex items-start gap-3">
-                          <span className={`text-xs font-semibold mt-1 transition-colors ${
+                          <span className={`text-xs font-semibold ${
                             index === currentChapter
                               ? 'text-blue-600 dark:text-blue-400'
-                              : 'text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300'
+                              : 'text-gray-400'
                           }`}>
                             {ch.number}
                           </span>
                           <div className="flex-1 min-w-0">
-                            <div className="text-sm font-serif line-clamp-2 leading-relaxed">
+                            <div className="text-sm font-serif line-clamp-2 leading-snug">
                               {ch.title}
                             </div>
                           </div>
@@ -353,7 +372,7 @@ const BookReader = () => {
                 {/* Bookmarks */}
                 {bookBookmarks.length > 0 && (
                   <div>
-                    <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-5 px-2 flex items-center">
+                    <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-4 px-2 flex items-center">
                       <Bookmark className="w-3.5 h-3.5 mr-2" />
                       Marcadores ({bookBookmarks.length})
                     </h3>
@@ -361,22 +380,22 @@ const BookReader = () => {
                       {bookBookmarks.map((bookmark) => (
                         <div
                           key={bookmark.id}
-                          className="group px-4 py-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
+                          className="group px-4 py-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border border-gray-200 dark:border-gray-600"
                         >
                           <button
                             onClick={() => goToChapter(bookmark.chapterIndex)}
                             className="text-left w-full mb-2"
                           >
-                            <div className="text-xs font-semibold text-blue-600 dark:text-blue-400 mb-2">
+                            <div className="text-xs font-semibold text-blue-600 dark:text-blue-400 mb-1">
                               Capítulo {bookmark.chapterIndex + 1}
                             </div>
-                            <div className="text-xs text-gray-600 dark:text-gray-400 line-clamp-2 font-serif leading-relaxed">
+                            <div className="text-xs text-gray-600 dark:text-gray-400 line-clamp-2 font-serif leading-snug">
                               {bookmark.text}
                             </div>
                           </button>
                           <button
                             onClick={() => removeBookmark(book.id, bookmark.id)}
-                            className="text-xs text-gray-400 hover:text-red-600 dark:text-gray-500 dark:hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100 font-medium"
+                            className="text-xs text-red-600 dark:text-red-400 hover:underline opacity-0 group-hover:opacity-100 transition-opacity"
                           >
                             Remover
                           </button>
@@ -389,25 +408,25 @@ const BookReader = () => {
                 {/* Annotations */}
                 {bookAnnotations.length > 0 && (
                   <div>
-                    <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-5 px-2 flex items-center">
+                    <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-4 px-2 flex items-center">
                       <Highlighter className="w-3.5 h-3.5 mr-2" />
                       Anotações ({bookAnnotations.length})
                     </h3>
-                    <div className="space-y-3">
+                    <div className="space-y-2">
                       {bookAnnotations.map((annotation) => (
                         <div
                           key={annotation.id}
-                          className={`p-4 rounded-xl bg-${annotation.color}-50 dark:bg-${annotation.color}-900/20 border-l-4 border-${annotation.color}-400 dark:border-${annotation.color}-600`}
+                          className={`p-4 rounded-lg bg-${annotation.color}-50 dark:bg-${annotation.color}-900/20 border-l-3 border-${annotation.color}-400 dark:border-${annotation.color}-600`}
                         >
-                          <div className="text-xs font-serif text-gray-700 dark:text-gray-300 mb-2 line-clamp-3 italic leading-relaxed">
+                          <div className="text-xs font-serif text-gray-700 dark:text-gray-300 mb-2 line-clamp-2 italic leading-snug">
                             "{annotation.selectedText}"
                           </div>
                           {annotation.note && (
-                            <div className="text-xs text-gray-600 dark:text-gray-400 mb-2 font-serif">
+                            <div className="text-xs text-gray-600 dark:text-gray-400 mb-2 font-serif leading-snug">
                               {annotation.note}
                             </div>
                           )}
-                          <div className="text-xs text-gray-400 dark:text-gray-500 font-medium">
+                          <div className="text-xs text-gray-500 dark:text-gray-400">
                             Capítulo {annotation.chapterIndex + 1}
                           </div>
                         </div>
@@ -420,118 +439,123 @@ const BookReader = () => {
           </>
         )}
 
-        {/* Main Content - Premium reading experience */}
+        {/* Main Content */}
         <main
           ref={contentRef}
-          className="flex-1 overflow-y-auto bg-[#f8f6f0] dark:bg-[#1a1a1a] scroll-smooth"
-          onMouseUp={handleTextSelection}
+          className="flex-1 overflow-y-auto bg-white dark:bg-gray-900 scroll-smooth"
+          onMouseUp={currentChapter >= 0 ? handleTextSelection : undefined}
         >
-          <article className={`max-w-3xl mx-auto px-6 md:px-12 lg:px-16 py-12 md:py-20 transition-opacity duration-300 ${isTransitioning ? 'opacity-0' : 'opacity-100 animate-fade-in'}`}>
-            {/* Chapter Header */}
-            <header className="mb-16">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-widest">
+          {currentChapter === -1 ? (
+            // Cover Page
+            <div className={`transition-opacity duration-300 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+              <BookCover book={book} onStart={() => goToChapter(0)} />
+            </div>
+          ) : (
+            // Chapter Content
+            <article className={`max-w-3xl mx-auto px-6 md:px-12 lg:px-16 py-12 md:py-20 transition-opacity duration-300 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+              {/* Chapter Header */}
+              <header className="mb-12">
+                <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
                   Capítulo {chapter.number}
                 </div>
-                <div className="flex-1 h-px bg-gradient-to-r from-gray-300 to-transparent dark:from-gray-700"></div>
+                <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900 dark:text-white leading-tight">
+                  {chapter.title}
+                </h2>
+                <div className="mt-4 h-px bg-gradient-to-r from-gray-300 via-gray-200 to-transparent dark:from-gray-700 dark:via-gray-800"></div>
+              </header>
+
+              {/* Chapter Content */}
+              <div
+                className="font-serif text-gray-800 dark:text-gray-200 selection:bg-blue-100 dark:selection:bg-blue-900/50"
+                style={{
+                  fontSize: `${fontSize}px`,
+                  lineHeight: '1.8',
+                  letterSpacing: '0.01em'
+                }}
+              >
+                <BookContentRenderer content={chapter.content} />
               </div>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-normal text-gray-900 dark:text-gray-100 leading-tight tracking-tight">
-                {chapter.title}
-              </h2>
-            </header>
 
-            {/* Chapter Content */}
-            <div
-              className="font-serif text-gray-800 dark:text-gray-200 selection:bg-blue-200 dark:selection:bg-blue-900/50"
-              style={{
-                fontSize: `${fontSize}px`,
-                lineHeight: '1.8',
-                letterSpacing: '0.01em'
-              }}
-            >
-              <BookContentRenderer content={chapter.content} />
-            </div>
+              {/* Navigation */}
+              <nav className="mt-16 pt-10 border-t border-gray-200 dark:border-gray-700">
+                <div className="flex justify-between items-center">
+                  <button
+                    onClick={previousChapter}
+                    disabled={currentChapter === 0}
+                    className="flex items-center space-x-2 px-5 py-2.5 rounded-lg bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                    <span className="text-sm font-medium">Anterior</span>
+                  </button>
 
-            {/* Navigation */}
-            <nav className="mt-20 pt-12 border-t border-gray-300/50 dark:border-gray-700/50">
-              <div className="flex justify-between items-center">
-                <button
-                  onClick={previousChapter}
-                  disabled={currentChapter === 0}
-                  className="flex items-center space-x-2.5 px-6 py-3 rounded-full bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 shadow-md hover:shadow-lg border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:scale-105 active:scale-95"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                  <span className="text-sm font-medium">Anterior</span>
-                </button>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">
+                    {currentChapter + 1} de {book.chapters.length}
+                  </div>
 
-                <div className="text-sm text-gray-400 dark:text-gray-500 font-medium">
-                  {currentChapter + 1} / {book.chapters.length}
+                  <button
+                    onClick={nextChapter}
+                    disabled={currentChapter === book.chapters.length - 1}
+                    className="flex items-center space-x-2 px-5 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                  >
+                    <span className="text-sm font-medium">Próximo</span>
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
                 </div>
 
-                <button
-                  onClick={nextChapter}
-                  disabled={currentChapter === book.chapters.length - 1}
-                  className="flex items-center space-x-2.5 px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 shadow-md hover:shadow-lg hover:scale-105 active:scale-95"
-                >
-                  <span className="text-sm font-medium">Próximo</span>
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
-
-              {/* Keyboard shortcuts hint */}
-              <div className="hidden md:flex justify-center mt-8 text-xs text-gray-400 dark:text-gray-600 space-x-6">
-                <span>← Anterior</span>
-                <span>→ Próximo</span>
-                <span>M Menu</span>
-                <span>B Marcador</span>
-                <span>Esc Fechar</span>
-              </div>
-            </nav>
-          </article>
+                {/* Keyboard shortcuts hint */}
+                <div className="hidden md:flex justify-center mt-6 text-xs text-gray-400 dark:text-gray-500 space-x-4">
+                  <span>← Anterior</span>
+                  <span>→ Próximo</span>
+                  <span>M Menu</span>
+                  <span>B Marcador</span>
+                </div>
+              </nav>
+            </article>
+          )}
         </main>
       </div>
 
-      {/* Annotation Modal - Premium design */}
+      {/* Annotation Modal */}
       {showAnnotationModal && (
-        <div className="fixed inset-0 bg-black/40 backdrop-blur-md flex items-center justify-center p-4 z-[60] animate-fade-in">
-          <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 max-w-lg w-full border border-gray-200/50 dark:border-gray-700/50 animate-scale-in">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[60]">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 max-w-lg w-full border border-gray-200 dark:border-gray-700">
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-lg font-serif font-medium text-gray-900 dark:text-gray-100 flex items-center">
-                <MessageSquare className="w-5 h-5 mr-3 text-gray-500" />
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center">
+                <MessageSquare className="w-5 h-5 mr-2 text-gray-500" />
                 Adicionar Anotação
               </h3>
               <button
                 onClick={() => setShowAnnotationModal(false)}
-                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-all duration-200 hover:scale-105 active:scale-95"
+                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
               >
                 <X className="w-5 h-5 text-gray-500" />
               </button>
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 mb-3 uppercase tracking-wide">
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                   Texto selecionado
                 </label>
-                <div className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl text-sm font-serif italic text-gray-700 dark:text-gray-300 border border-gray-200/50 dark:border-gray-600/50 leading-relaxed">
+                <div className="p-3 bg-gray-50 dark:bg-gray-700 rounded-lg text-sm font-serif italic text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-600 leading-relaxed">
                   "{selectedText}"
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 mb-3 uppercase tracking-wide">
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                   Nota (opcional)
                 </label>
                 <textarea
                   value={annotationNote}
                   onChange={(e) => setAnnotationNote(e.target.value)}
-                  className="w-full px-4 py-3.5 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all min-h-[120px] text-sm font-serif text-gray-900 dark:text-gray-100 placeholder:text-gray-400 resize-none"
-                  placeholder="Adicione uma nota sobre este trecho..."
+                  className="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all min-h-[100px] text-sm font-serif text-gray-900 dark:text-gray-100 placeholder:text-gray-400 resize-none"
+                  placeholder="Adicione uma nota..."
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 mb-4 uppercase tracking-wide">
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
                   Cor do destaque
                 </label>
                 <div className="flex space-x-3">
@@ -539,26 +563,26 @@ const BookReader = () => {
                     <button
                       key={color}
                       onClick={() => setAnnotationColor(color)}
-                      className={`w-14 h-14 rounded-full bg-${color}-200 dark:bg-${color}-700 border-4 ${
+                      className={`w-12 h-12 rounded-lg bg-${color}-200 dark:bg-${color}-700 border-2 ${
                         annotationColor === color
-                          ? 'border-gray-900 dark:border-white ring-4 ring-offset-2 ring-gray-900/20 dark:ring-white/20 scale-110'
-                          : 'border-transparent hover:border-gray-300 dark:hover:border-gray-500 hover:scale-105'
-                      } transition-all duration-200`}
+                          ? 'border-blue-600 dark:border-blue-400 scale-110'
+                          : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
+                      } transition-all`}
                     />
                   ))}
                 </div>
               </div>
 
-              <div className="flex space-x-3 pt-4">
+              <div className="flex space-x-3 pt-2">
                 <button
                   onClick={() => setShowAnnotationModal(false)}
-                  className="flex-1 px-6 py-3 rounded-full border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 text-sm font-medium hover:scale-105 active:scale-95"
+                  className="flex-1 px-5 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-sm font-medium"
                 >
                   Cancelar
                 </button>
                 <button
                   onClick={handleAddAnnotation}
-                  className="flex-1 px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white transition-all duration-200 text-sm font-medium shadow-md hover:shadow-lg hover:scale-105 active:scale-95"
+                  className="flex-1 px-5 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white transition-colors text-sm font-medium"
                 >
                   Salvar
                 </button>
