@@ -37,7 +37,13 @@ const BookReader = () => {
   const [fontSize, setFontSize] = useState(() => {
     return parseInt(localStorage.getItem('readerFontSize') || '18');
   });
-  const [showSidebar, setShowSidebar] = useState(false);
+  // Sidebar aberto por padrão em desktop (>= 768px)
+  const [showSidebar, setShowSidebar] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth >= 768;
+    }
+    return false;
+  });
   const [showAnnotationModal, setShowAnnotationModal] = useState(false);
   const [selectedText, setSelectedText] = useState('');
   const [annotationNote, setAnnotationNote] = useState('');
@@ -74,6 +80,19 @@ const BookReader = () => {
       updateProgress(book.id, currentChapter, 0);
     }
   }, [currentChapter, book]);
+
+  // Handle responsive sidebar - aberto em desktop, fechado em mobile
+  useEffect(() => {
+    const handleResize = () => {
+      const isDesktop = window.innerWidth >= 768;
+      setShowSidebar(isDesktop);
+    };
+
+    // Adiciona listener para resize
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -283,7 +302,7 @@ const BookReader = () => {
               onClick={() => setShowSidebar(false)}
             />
 
-            <aside className="w-80 md:w-96 flex-shrink-0 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 overflow-y-auto shadow-2xl z-50 animate-slide-right">
+            <aside className="w-80 md:w-96 flex-shrink-0 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 overflow-y-auto shadow-2xl md:shadow-lg z-50 md:z-10 md:relative md:animate-none animate-slide-right">
               <div className="p-6 md:p-8 space-y-8">
                 {/* Mobile header */}
                 <div className="flex items-center justify-between md:hidden mb-4">
