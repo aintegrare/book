@@ -114,5 +114,46 @@
     "contact": {
       "email": "acervo@classicos.com.br"
     }
+  },
+  {
+    "id": "resolucao-360",
+    "slug": "resolucao-360",
+    "name": "Resolução 360",
+    "brandName": "Resolução 360",
+    "logo": "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=200&h=200&fit=crop",
+    "description": "Plataforma de preparação para OAB com método de precisão cirúrgica - Estude Inteligente",
+    "colors": {
+      "primary": {
+        "50": "#E8EAF6",
+        "100": "#C5CAE9",
+        "200": "#9FA8DA",
+        "300": "#7986CB",
+        "400": "#5C6BC0",
+        "500": "#3F51B5",
+        "600": "#3949AB",
+        "700": "#303F9F",
+        "800": "#283593",
+        "900": "#1A237E"
+      },
+      "accent": {
+        "50": "#FFFDE7",
+        "100": "#FFF9C4",
+        "200": "#FFF59D",
+        "300": "#FFF176",
+        "400": "#FFEE58",
+        "500": "#FFEB3B",
+        "600": "#FDD835",
+        "700": "#FBC02D",
+        "800": "#F9A825",
+        "900": "#F57F17"
+      }
+    },
+    "books": ["OAB360"],
+    "contact": {
+      "email": "contato@resolucao360.com.br",
+      "website": "https://www.resolucao360.com.br",
+      "instagram": "@resolucao360",
+      "phone": "+55 15 98765-4321"
+    }
   }
 ]
