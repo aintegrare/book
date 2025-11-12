@@ -16,7 +16,7 @@ import booksData from '../data/books.json';
 import BookContentRenderer from '../components/BookContentRenderer';
 import BookCover from '../components/BookCover';
 import Toast from '../components/Toast';
-import { validateToken } from '../utils/shareTokens';
+import { validateToken, incrementTokenAccess } from '../utils/shareTokens';
 
 const SharedBookReader = () => {
   const { token } = useParams();
@@ -63,6 +63,9 @@ const SharedBookReader = () => {
 
     setIsValidToken(true);
     setBook(foundBook);
+
+    // Incrementa contador de acesso
+    incrementTokenAccess(token);
   }, [token]);
 
   // Handle responsive sidebar

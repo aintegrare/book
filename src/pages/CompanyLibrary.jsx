@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { Search, ArrowLeft } from 'lucide-react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { Search, ArrowLeft, Shield } from 'lucide-react';
 import BookCard from '../components/BookCard';
 import { useCompany } from '../contexts/CompanyContext';
 import companiesData from '../data/companies.json';
@@ -176,6 +176,17 @@ const CompanyLibrary = () => {
                   {company.contact.instagram}
                 </a>
               )}
+            </div>
+
+            {/* Admin Link - Discreto */}
+            <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+              <Link
+                to={`/admin/${company.slug}`}
+                className="inline-flex items-center gap-2 text-xs text-gray-400 dark:text-gray-600 hover:text-gray-600 dark:hover:text-gray-400 transition-colors"
+              >
+                <Shield className="w-3.5 h-3.5" />
+                Painel Administrativo
+              </Link>
             </div>
           </div>
         </div>

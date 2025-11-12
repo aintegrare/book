@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { X, Link2, Copy, Check, Clock, AlertCircle } from 'lucide-react';
 import { createShareToken } from '../utils/shareTokens';
+import { useCompany } from '../contexts/CompanyContext';
 
 const ShareLinkModal = ({ book, onClose }) => {
+  const { currentCompany } = useCompany();
   const [expirationHours, setExpirationHours] = useState(72); // 3 dias padrão
   const [generatedLink, setGeneratedLink] = useState('');
   const [copied, setCopied] = useState(false);
@@ -15,7 +17,8 @@ const ShareLinkModal = ({ book, onClose }) => {
   ];
 
   const generateLink = () => {
-    const token = createShareToken(book.id, expirationHours);
+    const companySlug = currentCompany?.slug || null;
+    const token = createShareToken(book.id, expirationHours, companySlug);
     const url = `${window.location.origin}/share/${token}`;
     setGeneratedLink(url);
     setCopied(false);

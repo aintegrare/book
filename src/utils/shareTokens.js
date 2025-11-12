@@ -15,17 +15,20 @@ export const generateToken = () => {
  * Cria um token de compartilhamento para um ebook
  * @param {string} bookId - ID do livro
  * @param {number} expirationHours - Horas até expiração (padrão: 72h)
+ * @param {string} companySlug - Slug da empresa (opcional)
  * @returns {string} - Token gerado
  */
-export const createShareToken = (bookId, expirationHours = 72) => {
+export const createShareToken = (bookId, expirationHours = 72, companySlug = null) => {
   const token = generateToken();
   const expiresAt = Date.now() + (expirationHours * 60 * 60 * 1000);
 
   const tokens = getTokens();
   tokens[token] = {
     bookId,
+    companySlug,
     expiresAt,
-    createdAt: Date.now()
+    createdAt: Date.now(),
+    accessCount: 0
   };
 
   saveTokens(tokens);
@@ -127,4 +130,55 @@ export const getBookTokens = (bookId) => {
   return Object.entries(tokens)
     .filter(([_, data]) => data.bookId === bookId && now <= data.expiresAt)
     .map(([token, data]) => ({ token, ...data }));
+};
+
+/**
+ * Lista todos os tokens de uma empresa (ativos e expirados)
+ * @param {string} companySlug - Slug da empresa
+ * @param {boolean} activeOnly - Retornar apenas tokens ativos
+ */
+export const getCompanyTokens = (companySlug, activeOnly = false) => {
+  const tokens = getTokens();
+  const now = Date.now();
+
+  return Object.entries(tokens)
+    .filter(([_, data]) => {
+      if (data.companySlug !== companySlug) return false;
+      if (activeOnly && now > data.expiresAt) return false;
+      return true;
+    })
+    .map(([token, data]) => ({
+      token,
+      ...data,
+      isExpired: now > data.expiresAt,
+      status: now > data.expiresAt ? 'expired' : 'active'
+    }))
+    .sort((a, b) => b.createdAt - a.createdAt); // Mais recentes primeiro
+};
+
+/**
+ * Incrementa contador de acesso de um token
+ */
+export const incrementTokenAccess = (token) => {
+  const tokens = getTokens();
+  if (tokens[token]) {
+    tokens[token].accessCount = (tokens[token].accessCount || 0) + 1;
+    tokens[token].lastAccessAt = Date.now();
+    saveTokens(tokens);
+  }
+};
+
+/**
+ * Obtém estatísticas de tokens de uma empresa
+ */
+export const getCompanyTokenStats = (companySlug) => {
+  const allTokens = getCompanyTokens(companySlug, false);
+  const activeTokens = allTokens.filter(t => t.status === 'active');
+
+  return {
+    total: allTokens.length,
+    active: activeTokens.length,
+    expired: allTokens.length - activeTokens.length,
+    totalAccesses: allTokens.reduce((sum, t) => sum + (t.accessCount || 0), 0)
+  };
 };
