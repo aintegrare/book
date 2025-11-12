@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Search, ArrowLeft, BookOpen, Mail, Phone, Globe, Instagram, Library, Award, Users } from 'lucide-react';
+import { Search, ArrowLeft } from 'lucide-react';
 import BookCard from '../components/BookCard';
 import { useCompany } from '../contexts/CompanyContext';
 import companiesData from '../data/companies.json';
@@ -67,76 +67,29 @@ const CompanyLibrary = () => {
         </div>
       </div>
 
-      {/* Hero Section - Clean Material Design */}
-      <div className="bg-white dark:bg-gray-800 border-b-2 border-gray-100 dark:border-gray-700">
+      {/* Hero Section - Minimalist Institutional */}
+      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12 lg:py-16">
-          <div className="grid lg:grid-cols-[2fr,1fr] gap-16 items-start">
-            {/* Left side - Company info */}
-            <div className="space-y-8">
-              {/* Company Logo & Name */}
-              <div className="flex items-start space-x-6">
-                {company.logo && (
-                  <div className="flex-shrink-0 w-20 h-20 md:w-24 md:h-24 rounded-xl overflow-hidden shadow-md border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700">
-                    <img
-                      src={company.logo}
-                      alt={company.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                )}
+          <div className="max-w-4xl">
+            {/* Company Name */}
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-sans font-bold text-gray-900 dark:text-white mb-6">
+              {company.brandName}
+            </h1>
 
-                <div className="flex-1 min-w-0 pt-1">
-                  <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-gray-900 dark:text-white leading-tight mb-2">
-                    {company.brandName}
-                  </h1>
-                  <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-600 dark:text-gray-400 mt-3">
-                    <div className="flex items-center space-x-1.5">
-                      <Library className="w-4 h-4" />
-                      <span className="font-medium">
-                        {companyBooks.length} {companyBooks.length === 1 ? 'título' : 'títulos'}
-                      </span>
-                    </div>
-                    <span className="text-gray-300 dark:text-gray-600">•</span>
-                    <div className="flex items-center space-x-1.5">
-                      <BookOpen className="w-4 h-4" />
-                      <span>Biblioteca Digital</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            {/* Description */}
+            {company.description && (
+              <p className="text-base md:text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-8">
+                {company.description}
+              </p>
+            )}
 
-              {/* Company description */}
-              {company.description && (
-                <div className="max-w-3xl">
-                  <p className="text-base md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-                    {company.description}
-                  </p>
-                </div>
-              )}
-            </div>
-
-            {/* Right side - Search */}
-            <div className="lg:pt-1">
-              <div className="bg-gray-50 dark:bg-gray-700/30 rounded-xl p-6 border border-gray-200 dark:border-gray-600">
-                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-                  Pesquisar na biblioteca
-                </label>
-                <div className="relative">
-                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                  <input
-                    type="text"
-                    placeholder="Título, autor..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-12 pr-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-blue-600 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/30 transition-all shadow-sm"
-                  />
-                </div>
-                {searchTerm && (
-                  <p className="mt-3 text-xs text-gray-600 dark:text-gray-400">
-                    {filteredBooks.length} resultado{filteredBooks.length !== 1 ? 's' : ''} encontrado{filteredBooks.length !== 1 ? 's' : ''}
-                  </p>
-                )}
-              </div>
+            {/* Stats */}
+            <div className="flex items-center gap-6 text-sm text-gray-600 dark:text-gray-400">
+              <span>
+                {companyBooks.length} {companyBooks.length === 1 ? 'título' : 'títulos'}
+              </span>
+              <span className="text-gray-300 dark:text-gray-600">|</span>
+              <span>Biblioteca Digital</span>
             </div>
           </div>
         </div>
@@ -144,6 +97,22 @@ const CompanyLibrary = () => {
 
       {/* Books Section */}
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
+        {/* Search */}
+        {companyBooks.length > 1 && (
+          <div className="mb-10">
+            <div className="relative max-w-md">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <input
+                type="text"
+                placeholder="Buscar..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-gray-900 dark:focus:border-gray-400 transition-colors"
+              />
+            </div>
+          </div>
+        )}
+
         {filteredBooks.length > 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
             {filteredBooks.map((book) => (
@@ -152,15 +121,9 @@ const CompanyLibrary = () => {
           </div>
         ) : (
           <div className="text-center py-24">
-            <Search className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-              {searchTerm ? 'Nenhum livro encontrado' : 'Nenhum livro disponível'}
-            </h3>
-            {searchTerm && (
-              <p className="text-gray-600 dark:text-gray-400 max-w-md mx-auto">
-                Tente buscar com outros termos ou explore nosso catálogo completo
-              </p>
-            )}
+            <p className="text-gray-600 dark:text-gray-400">
+              {searchTerm ? 'Nenhum resultado encontrado' : 'Nenhum livro disponível'}
+            </p>
           </div>
         )}
       </div>
@@ -169,37 +132,26 @@ const CompanyLibrary = () => {
       {company.contact && (
         <div className="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
           <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
-            <div className="mb-8">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                Contato
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400 text-sm">
-                Entre em contato conosco
-              </p>
-            </div>
+            <h3 className="text-sm font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-6">
+              Contato
+            </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {company.contact.email && (
                 <a
                   href={`mailto:${company.contact.email}`}
-                  className="flex items-center space-x-3 px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border border-gray-200 dark:border-gray-600"
+                  className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
                 >
-                  <Mail className="w-5 h-5 text-gray-600 dark:text-gray-400 flex-shrink-0" />
-                  <span className="text-sm text-gray-900 dark:text-white truncate">
-                    {company.contact.email}
-                  </span>
+                  {company.contact.email}
                 </a>
               )}
 
               {company.contact.phone && (
                 <a
                   href={`tel:${company.contact.phone}`}
-                  className="flex items-center space-x-3 px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border border-gray-200 dark:border-gray-600"
+                  className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
                 >
-                  <Phone className="w-5 h-5 text-gray-600 dark:text-gray-400 flex-shrink-0" />
-                  <span className="text-sm text-gray-900 dark:text-white">
-                    {company.contact.phone}
-                  </span>
+                  {company.contact.phone}
                 </a>
               )}
 
@@ -208,12 +160,9 @@ const CompanyLibrary = () => {
                   href={company.contact.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center space-x-3 px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border border-gray-200 dark:border-gray-600"
+                  className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
                 >
-                  <Globe className="w-5 h-5 text-gray-600 dark:text-gray-400 flex-shrink-0" />
-                  <span className="text-sm text-gray-900 dark:text-white">
-                    Visitar site
-                  </span>
+                  Website
                 </a>
               )}
 
@@ -222,12 +171,9 @@ const CompanyLibrary = () => {
                   href={`https://instagram.com/${company.contact.instagram.replace('@', '')}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center space-x-3 px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border border-gray-200 dark:border-gray-600"
+                  className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
                 >
-                  <Instagram className="w-5 h-5 text-gray-600 dark:text-gray-400 flex-shrink-0" />
-                  <span className="text-sm text-gray-900 dark:text-white">
-                    {company.contact.instagram}
-                  </span>
+                  {company.contact.instagram}
                 </a>
               )}
             </div>
