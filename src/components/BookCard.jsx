@@ -1,11 +1,14 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useBooks } from '../contexts/BookContext';
-import { BookOpen } from 'lucide-react';
+import { BookOpen, Link2 } from 'lucide-react';
+import ShareLinkModal from './ShareLinkModal';
 
 const BookCard = ({ book }) => {
   const { unlockedBooks, progress } = useBooks();
   const isUnlocked = unlockedBooks.includes(book.code);
   const bookProgress = progress[book.id];
+  const [showShareModal, setShowShareModal] = useState(false);
 
   const progressPercentage = bookProgress
     ? Math.round(((bookProgress.chapterIndex + 1) / book.chapters.length) * 100)
@@ -14,46 +17,64 @@ const BookCard = ({ book }) => {
   const isCompleted = progressPercentage === 100;
   const isInProgress = progressPercentage > 0 && progressPercentage < 100;
 
-  return (
-    <Link
-      to={isUnlocked ? `/read/${book.id}` : `/access?book=${book.code}`}
-      className="group block"
-    >
-      <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200 border border-gray-200 dark:border-gray-700">
-        {/* Book Cover */}
-        <div className="relative aspect-[4/5] overflow-hidden bg-gray-800 dark:bg-gray-900">
-          {book.cover ? (
-            <img
-              src={book.cover}
-              alt={book.title}
-              className="w-full h-full object-cover"
-              loading="lazy"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center p-8">
-              <div className="text-center space-y-3">
-                <BookOpen className="w-12 h-12 text-gray-400 mx-auto" />
-                <h3 className="text-white font-serif font-medium text-sm leading-tight line-clamp-3">
-                  {book.title}
-                </h3>
-              </div>
-            </div>
-          )}
+  const handleShareClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setShowShareModal(true);
+  };
 
-          {/* Progress Bar - Material Design */}
-          {isUnlocked && progressPercentage > 0 && (
-            <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-gray-200 dark:bg-gray-600">
-              <div
-                className={`h-full transition-all duration-300 ${
-                  isCompleted
-                    ? 'bg-green-600 dark:bg-green-500'
-                    : 'bg-blue-600 dark:bg-blue-500'
-                }`}
-                style={{ width: `${progressPercentage}%` }}
+  return (
+    <>
+      <Link
+        to={isUnlocked ? `/read/${book.id}` : `/access?book=${book.code}`}
+        className="group block"
+      >
+        <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200 border border-gray-200 dark:border-gray-700">
+          {/* Book Cover */}
+          <div className="relative aspect-[4/5] overflow-hidden bg-gray-800 dark:bg-gray-900">
+            {book.cover ? (
+              <img
+                src={book.cover}
+                alt={book.title}
+                className="w-full h-full object-cover"
+                loading="lazy"
               />
-            </div>
-          )}
-        </div>
+            ) : (
+              <div className="w-full h-full flex items-center justify-center p-8">
+                <div className="text-center space-y-3">
+                  <BookOpen className="w-12 h-12 text-gray-400 mx-auto" />
+                  <h3 className="text-white font-serif font-medium text-sm leading-tight line-clamp-3">
+                    {book.title}
+                  </h3>
+                </div>
+              </div>
+            )}
+
+            {/* Share Button - Only for unlocked books */}
+            {isUnlocked && (
+              <button
+                onClick={handleShareClick}
+                className="absolute top-3 right-3 p-2 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-800 backdrop-blur-sm rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                title="Compartilhar"
+              >
+                <Link2 className="w-4 h-4 text-gray-700 dark:text-gray-300" />
+              </button>
+            )}
+
+            {/* Progress Bar - Material Design */}
+            {isUnlocked && progressPercentage > 0 && (
+              <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-gray-200 dark:bg-gray-600">
+                <div
+                  className={`h-full transition-all duration-300 ${
+                    isCompleted
+                      ? 'bg-green-600 dark:bg-green-500'
+                      : 'bg-blue-600 dark:bg-blue-500'
+                  }`}
+                  style={{ width: `${progressPercentage}%` }}
+                />
+              </div>
+            )}
+          </div>
 
         {/* Book Info */}
         <div className="p-4 space-y-2">
@@ -86,6 +107,15 @@ const BookCard = ({ book }) => {
         </div>
       </div>
     </Link>
+
+    {/* Share Link Modal */}
+    {showShareModal && (
+      <ShareLinkModal
+        book={book}
+        onClose={() => setShowShareModal(false)}
+      />
+    )}
+  </>
   );
 };
 

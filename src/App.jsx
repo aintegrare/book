@@ -6,6 +6,7 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Access from './pages/Access';
 import BookReader from './pages/BookReader';
+import SharedBookReader from './pages/SharedBookReader';
 import CompaniesShowcase from './pages/CompaniesShowcase';
 import CompanyLibrary from './pages/CompanyLibrary';
 
@@ -17,8 +18,9 @@ function App() {
           <BrowserRouter>
             <div className="min-h-screen">
               <Routes>
-                {/* Routes without Navbar (Reader) */}
+                {/* Routes without Navbar (Readers) */}
                 <Route path="/read/:bookId" element={<BookReader />} />
+                <Route path="/share/:token" element={<SharedBookReader />} />
 
                 {/* Routes with Navbar */}
                 <Route
