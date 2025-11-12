@@ -8,9 +8,9 @@ const Navbar = () => {
   const { currentCompany } = useCompany();
 
   return (
-    <nav className="sticky top-0 z-50 bg-white dark:bg-primary-900 shadow-material-2 transition-all duration-300">
+    <nav className="sticky top-0 z-50 bg-white/90 dark:bg-primary-900/90 backdrop-blur-lg shadow-lg border-b border-primary-100/50 dark:border-primary-800/50 transition-all duration-300">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-18 py-3">
           {/* Logo - Typography or Company Logo */}
           <Link
             to="/"
