@@ -3,12 +3,32 @@
 const STORAGE_KEY = 'bookShareTokens';
 
 /**
- * Gera um token único
+ * Codifica dados em base64 (URL-safe)
  */
-export const generateToken = () => {
-  return Math.random().toString(36).substring(2, 15) +
-         Math.random().toString(36).substring(2, 15) +
-         Date.now().toString(36);
+const encode = (data) => {
+  return btoa(JSON.stringify(data))
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=/g, '');
+};
+
+/**
+ * Decodifica dados de base64 (URL-safe)
+ */
+const decode = (str) => {
+  try {
+    // Restaura caracteres base64
+    const base64 = str
+      .replace(/-/g, '+')
+      .replace(/_/g, '/');
+
+    // Adiciona padding se necessário
+    const padded = base64 + '='.repeat((4 - base64.length % 4) % 4);
+
+    return JSON.parse(atob(padded));
+  } catch (error) {
+    return null;
+  }
 };
 
 /**
@@ -19,19 +39,27 @@ export const generateToken = () => {
  * @returns {string} - Token gerado
  */
 export const createShareToken = (bookId, expirationHours = 72, companySlug = null) => {
-  const token = generateToken();
-  const expiresAt = Date.now() + (expirationHours * 60 * 60 * 1000);
+  const now = Date.now();
+  const expiresAt = now + (expirationHours * 60 * 60 * 1000);
 
-  const tokens = getTokens();
-  tokens[token] = {
+  // Dados codificados no token
+  const tokenData = {
     bookId,
     companySlug,
     expiresAt,
-    createdAt: Date.now(),
-    accessCount: 0
+    createdAt: now
   };
 
+  const token = encode(tokenData);
+
+  // Salva no localStorage apenas para tracking (admin)
+  const tokens = getTokens();
+  tokens[token] = {
+    ...tokenData,
+    accessCount: 0
+  };
   saveTokens(tokens);
+
   return token;
 };
 
@@ -41,18 +69,15 @@ export const createShareToken = (bookId, expirationHours = 72, companySlug = nul
  * @returns {string|null} - bookId se válido, null se inválido ou expirado
  */
 export const validateToken = (token) => {
-  const tokens = getTokens();
-  const tokenData = tokens[token];
+  // Decodifica o token
+  const tokenData = decode(token);
 
-  if (!tokenData) {
+  if (!tokenData || !tokenData.bookId || !tokenData.expiresAt) {
     return null;
   }
 
   // Verifica se expirou
   if (Date.now() > tokenData.expiresAt) {
-    // Remove token expirado
-    delete tokens[token];
-    saveTokens(tokens);
     return null;
   }
 
@@ -104,11 +129,18 @@ export const cleanExpiredTokens = () => {
 };
 
 /**
- * Obtém informações sobre um token (sem validar)
+ * Obtém informações sobre um token (decodificando se necessário)
  */
 export const getTokenInfo = (token) => {
   const tokens = getTokens();
-  return tokens[token] || null;
+
+  // Tenta primeiro buscar no localStorage
+  if (tokens[token]) {
+    return tokens[token];
+  }
+
+  // Se não encontrou, decodifica o token
+  return decode(token);
 };
 
 /**
@@ -158,14 +190,29 @@ export const getCompanyTokens = (companySlug, activeOnly = false) => {
 
 /**
  * Incrementa contador de acesso de um token
+ * Se o token não existe no localStorage (acesso de outro dispositivo),
+ * cria uma entrada para tracking
  */
 export const incrementTokenAccess = (token) => {
   const tokens = getTokens();
+  const tokenData = decode(token);
+
+  if (!tokenData) return;
+
   if (tokens[token]) {
+    // Token já existe, apenas incrementa
     tokens[token].accessCount = (tokens[token].accessCount || 0) + 1;
     tokens[token].lastAccessAt = Date.now();
-    saveTokens(tokens);
+  } else {
+    // Token não existe (acesso de outro dispositivo), cria entrada
+    tokens[token] = {
+      ...tokenData,
+      accessCount: 1,
+      lastAccessAt: Date.now()
+    };
   }
+
+  saveTokens(tokens);
 };
 
 /**
