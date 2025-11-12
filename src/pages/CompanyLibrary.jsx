@@ -54,73 +54,88 @@ const CompanyLibrary = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Hero Section - Clean Material Design */}
+      {/* Navigation Bar */}
       <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
-          {/* Back Button */}
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-4">
           <button
             onClick={() => navigate('/')}
-            className="inline-flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors mb-8"
+            className="inline-flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Catálogo Geral</span>
+            <span>Voltar ao Catálogo</span>
           </button>
+        </div>
+      </div>
 
-          {/* Company Header */}
-          <div className="grid lg:grid-cols-[1fr,400px] gap-12 items-start">
+      {/* Hero Section - Clean Material Design */}
+      <div className="bg-white dark:bg-gray-800 border-b-2 border-gray-100 dark:border-gray-700">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12 lg:py-16">
+          <div className="grid lg:grid-cols-[2fr,1fr] gap-16 items-start">
             {/* Left side - Company info */}
-            <div className="space-y-6">
-              {/* Company Logo */}
-              {company.logo && (
-                <div className="w-24 h-24 md:w-32 md:h-32 rounded-lg overflow-hidden shadow-sm border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
-                  <img
-                    src={company.logo}
-                    alt={company.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              )}
+            <div className="space-y-8">
+              {/* Company Logo & Name */}
+              <div className="flex items-start space-x-6">
+                {company.logo && (
+                  <div className="flex-shrink-0 w-20 h-20 md:w-24 md:h-24 rounded-xl overflow-hidden shadow-md border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700">
+                    <img
+                      src={company.logo}
+                      alt={company.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
 
-              {/* Company name and description */}
-              <div className="space-y-3">
-                <h1 className="text-4xl md:text-5xl font-serif font-bold text-gray-900 dark:text-white leading-tight">
-                  {company.brandName}
-                </h1>
-                {company.description && (
-                  <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl">
+                <div className="flex-1 min-w-0 pt-1">
+                  <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-gray-900 dark:text-white leading-tight mb-2">
+                    {company.brandName}
+                  </h1>
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-600 dark:text-gray-400 mt-3">
+                    <div className="flex items-center space-x-1.5">
+                      <Library className="w-4 h-4" />
+                      <span className="font-medium">
+                        {companyBooks.length} {companyBooks.length === 1 ? 'título' : 'títulos'}
+                      </span>
+                    </div>
+                    <span className="text-gray-300 dark:text-gray-600">•</span>
+                    <div className="flex items-center space-x-1.5">
+                      <BookOpen className="w-4 h-4" />
+                      <span>Biblioteca Digital</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Company description */}
+              {company.description && (
+                <div className="max-w-3xl">
+                  <p className="text-base md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
                     {company.description}
                   </p>
-                )}
-              </div>
-
-              {/* Stats */}
-              <div className="flex items-center space-x-6 text-sm text-gray-600 dark:text-gray-400">
-                <div className="flex items-center space-x-2">
-                  <Library className="w-5 h-5" />
-                  <span>
-                    {companyBooks.length} {companyBooks.length === 1 ? 'livro' : 'livros'}
-                  </span>
                 </div>
-                <div className="h-4 w-px bg-gray-300 dark:bg-gray-600"></div>
-                <div className="flex items-center space-x-2">
-                  <BookOpen className="w-5 h-5" />
-                  <span>Biblioteca Digital</span>
-                </div>
-              </div>
+              )}
             </div>
 
             {/* Right side - Search */}
-            <div className="space-y-4">
-              {/* Search Bar */}
-              <div className="relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                <input
-                  type="text"
-                  placeholder="Buscar livros..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/30 transition-colors"
-                />
+            <div className="lg:pt-1">
+              <div className="bg-gray-50 dark:bg-gray-700/30 rounded-xl p-6 border border-gray-200 dark:border-gray-600">
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                  Pesquisar na biblioteca
+                </label>
+                <div className="relative">
+                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                  <input
+                    type="text"
+                    placeholder="Título, autor..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full pl-12 pr-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-blue-600 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/30 transition-all shadow-sm"
+                  />
+                </div>
+                {searchTerm && (
+                  <p className="mt-3 text-xs text-gray-600 dark:text-gray-400">
+                    {filteredBooks.length} resultado{filteredBooks.length !== 1 ? 's' : ''} encontrado{filteredBooks.length !== 1 ? 's' : ''}
+                  </p>
+                )}
               </div>
             </div>
           </div>
@@ -130,23 +145,11 @@ const CompanyLibrary = () => {
       {/* Books Section */}
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
         {filteredBooks.length > 0 ? (
-          <>
-            {/* Results count */}
-            {searchTerm && (
-              <div className="mb-8">
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {filteredBooks.length} resultado{filteredBooks.length !== 1 ? 's' : ''} encontrado{filteredBooks.length !== 1 ? 's' : ''}
-                </p>
-              </div>
-            )}
-
-            {/* Books Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
-              {filteredBooks.map((book) => (
-                <BookCard key={book.id} book={book} />
-              ))}
-            </div>
-          </>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+            {filteredBooks.map((book) => (
+              <BookCard key={book.id} book={book} />
+            ))}
+          </div>
         ) : (
           <div className="text-center py-24">
             <Search className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />

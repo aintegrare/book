@@ -21,7 +21,7 @@ const BookCard = ({ book }) => {
     >
       <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-200 border border-gray-200 dark:border-gray-700">
         {/* Book Cover */}
-        <div className="relative aspect-[2/3] overflow-hidden bg-gray-100 dark:bg-gray-700">
+        <div className="relative aspect-[3/4] overflow-hidden bg-gray-100 dark:bg-gray-700">
           <img
             src={book.cover}
             alt={book.title}
@@ -31,7 +31,7 @@ const BookCard = ({ book }) => {
 
           {/* Progress Bar - Material Design */}
           {isUnlocked && progressPercentage > 0 && (
-            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-200 dark:bg-gray-600">
+            <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-gray-200 dark:bg-gray-600">
               <div
                 className={`h-full transition-all duration-300 ${
                   isCompleted
@@ -45,9 +45,9 @@ const BookCard = ({ book }) => {
         </div>
 
         {/* Book Info */}
-        <div className="p-4 space-y-2">
+        <div className="p-5 space-y-2.5">
           {/* Title */}
-          <h3 className="font-serif font-semibold text-base text-gray-900 dark:text-white line-clamp-2 leading-snug">
+          <h3 className="font-serif font-semibold text-base text-gray-900 dark:text-white line-clamp-2 leading-snug min-h-[2.5rem]">
             {book.title}
           </h3>
 
@@ -57,8 +57,8 @@ const BookCard = ({ book }) => {
           </p>
 
           {/* Meta info */}
-          <div className="flex items-center justify-between pt-2 text-xs text-gray-500 dark:text-gray-400">
-            <div className="flex items-center space-x-1">
+          <div className="flex items-center justify-between pt-1 text-xs text-gray-500 dark:text-gray-400">
+            <div className="flex items-center space-x-1.5">
               <BookOpen className="w-3.5 h-3.5" />
               <span>{book.pages}p</span>
             </div>
