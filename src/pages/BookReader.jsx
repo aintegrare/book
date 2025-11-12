@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { useBooks } from '../contexts/BookContext';
 import booksData from '../data/books.json';
+import BookContentRenderer from '../components/BookContentRenderer';
 
 const BookReader = () => {
   const { bookId } = useParams();
@@ -319,15 +320,8 @@ const BookReader = () => {
             </header>
 
             {/* Chapter Content */}
-            <div
-              className="prose prose-lg dark:prose-invert max-w-none leading-relaxed"
-              style={{ fontSize: `${fontSize}px` }}
-            >
-              {chapter.content.split('\n\n').map((paragraph, index) => (
-                <p key={index} className="mb-6">
-                  {paragraph}
-                </p>
-              ))}
+            <div style={{ fontSize: `${fontSize}px` }}>
+              <BookContentRenderer content={chapter.content} />
             </div>
 
             {/* Navigation */}

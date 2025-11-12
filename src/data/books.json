@@ -91,7 +91,132 @@
       {
         "number": 1,
         "title": "O Problema da Abundância Desorganizada",
-        "content": "═══════════════════════════════════════════════════════════\n\n  § 1.1  VOCÊ NÃO PRECISA DE MAIS CONTEÚDO\n\n═══════════════════════════════════════════════════════════\n\nSe você está se preparando para a primeira fase da OAB, provavelmente já passou por este ciclo:\n\n  ▸  Comprou mais de um curso preparatório\n  ▸  Baixou dezenas de PDFs de resumos\n  ▸  Salvou centenas de posts no Instagram sobre \"dicas de aprovação\"\n  ▸  Tentou assistir videoaulas de 3 horas sobre cada disciplina\n  ▸  Acumulou material de estudo que levaria anos para revisar\n\nE ainda assim, ao abrir uma prova da FGV, você sente aquela pontada:\n\n    ┌─────────────────────────────────────────────────────┐\n    │  \"Eu estudei isso... mas não lembro direito.\"       │\n    │  \"Vi esse assunto, mas não sei aplicar.\"            │\n    │  \"Parece que nunca é suficiente.\"                   │\n    └─────────────────────────────────────────────────────┘\n\n\n┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n┃  DIAGNÓSTICO                                          ┃\n┃                                                       ┃\n┃  O problema não é falta de conteúdo.                  ┃\n┃  É excesso dele.                                      ┃\n┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n\n\nVocê não precisa de mais PDFs. Você precisa de CLAREZA.\nVocê não precisa de mais aulas. Você precisa de FOCO.\nVocê não precisa de mais resumos. Você precisa de MÉTODO.\n\n\n\n\n═══════════════════════════════════════════════════════════\n\n  § 1.2  A ILUSÃO DO \"ESTUDAR TUDO\"\n\n═══════════════════════════════════════════════════════════\n\n\n▐ PANORAMA DA 1ª FASE DA OAB\n\n  • 17 disciplinas\n  • Dezenas (às vezes centenas) de artigos de lei por disciplina\n  • Bancas de cursinhos que te convencem: \"você precisa dominar tudo\"\n\n\n┌─────────────────────────────────────────────────────────┐\n│  VERDADE INCONVENIENTE:                                 │\n│                                                         │\n│  Você nunca vai conseguir estudar tudo com profundidade.│\n│  E não precisa.                                         │\n└─────────────────────────────────────────────────────────┘\n\n\n▐ O QUE A FGV REALMENTE COBRA\n\n  A FGV não cobra \"tudo\".\n\n  ✓ Ela cobra PADRÕES\n  ✓ Ela cobra ESTRUTURAS\n  ✓ Ela cobra RACIOCÍNIO APLICADO a situações práticas\n\n  E ela faz isso de uma forma específica, organizada e previsível:\n\n    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n    ┃   POR CAPÍTULOS DE LEI         ┃\n    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n\n\n\n▐ QUANDO VOCÊ ALINHA SEU ESTUDO À LÓGICA DA BANCA\n\nQuando você organiza seu estudo da mesma forma que a banca organiza a prova, algo transformador acontece:\n\n  ▸  Você estuda MENOS TEMPO\n  ▸  Retém MAIS INFORMAÇÃO\n  ▸  Identifica PADRÕES DE COBRANÇA\n  ▸  Desenvolve RACIOCÍNIO JURÍDICO (não apenas memorização)\n  ▸  Sente CONFIANÇA REAL ao abrir a prova\n\n\n─────────────────────────────────────────────────────────\n\nEste guia vai te mostrar exatamente como fazer isso.\n\n─────────────────────────────────────────────────────────"
+        "content": [
+          {
+            "type": "section",
+            "level": 2,
+            "number": "1.1",
+            "title": "Você Não Precisa de Mais Conteúdo"
+          },
+          {
+            "type": "paragraph",
+            "variant": "lead",
+            "text": "Se você está se preparando para a primeira fase da OAB, provavelmente já passou por este ciclo:"
+          },
+          {
+            "type": "list",
+            "listType": "bullet",
+            "items": [
+              "Comprou mais de um curso preparatório",
+              "Baixou dezenas de PDFs de resumos",
+              "Salvou centenas de posts no Instagram sobre \"dicas de aprovação\"",
+              "Tentou assistir videoaulas de 3 horas sobre cada disciplina",
+              "Acumulou material de estudo que levaria anos para revisar"
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "E ainda assim, ao abrir uma prova da FGV, você sente aquela pontada:"
+          },
+          {
+            "type": "callout",
+            "variant": "quote",
+            "content": "Eu estudei isso... mas não lembro direito.\nVi esse assunto, mas não sei aplicar.\nParece que nunca é suficiente."
+          },
+          {
+            "type": "box",
+            "variant": "diagnosis",
+            "title": "Diagnóstico",
+            "content": "O problema não é falta de conteúdo.\nÉ excesso dele."
+          },
+          {
+            "type": "paragraph",
+            "text": "Você não precisa de mais PDFs. Você precisa de CLAREZA.\nVocê não precisa de mais aulas. Você precisa de FOCO.\nVocê não precisa de mais resumos. Você precisa de MÉTODO."
+          },
+          {
+            "type": "separator"
+          },
+          {
+            "type": "section",
+            "level": 2,
+            "number": "1.2",
+            "title": "A Ilusão do \"Estudar Tudo\""
+          },
+          {
+            "type": "section",
+            "level": 3,
+            "title": "Panorama da 1ª Fase da OAB"
+          },
+          {
+            "type": "list",
+            "listType": "bullet",
+            "items": [
+              "17 disciplinas",
+              "Dezenas (às vezes centenas) de artigos de lei por disciplina",
+              "Bancas de cursinhos que te convencem: \"você precisa dominar tudo\""
+            ]
+          },
+          {
+            "type": "callout",
+            "variant": "important",
+            "content": "VERDADE INCONVENIENTE:\n\nVocê nunca vai conseguir estudar tudo com profundidade.\nE não precisa."
+          },
+          {
+            "type": "section",
+            "level": 3,
+            "title": "O Que a FGV Realmente Cobra"
+          },
+          {
+            "type": "paragraph",
+            "text": "A FGV não cobra \"tudo\"."
+          },
+          {
+            "type": "list",
+            "listType": "check",
+            "items": [
+              "Ela cobra PADRÕES",
+              "Ela cobra ESTRUTURAS",
+              "Ela cobra RACIOCÍNIO APLICADO a situações práticas"
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "E ela faz isso de uma forma específica, organizada e previsível:"
+          },
+          {
+            "type": "box",
+            "variant": "principle",
+            "content": "POR CAPÍTULOS DE LEI"
+          },
+          {
+            "type": "section",
+            "level": 3,
+            "title": "Quando Você Alinha Seu Estudo à Lógica da Banca"
+          },
+          {
+            "type": "paragraph",
+            "text": "Quando você organiza seu estudo da mesma forma que a banca organiza a prova, algo transformador acontece:"
+          },
+          {
+            "type": "list",
+            "listType": "bullet",
+            "items": [
+              "Você estuda MENOS TEMPO",
+              "Retém MAIS INFORMAÇÃO",
+              "Identifica PADRÕES DE COBRANÇA",
+              "Desenvolve RACIOCÍNIO JURÍDICO (não apenas memorização)",
+              "Sente CONFIANÇA REAL ao abrir a prova"
+            ]
+          },
+          {
+            "type": "separator"
+          },
+          {
+            "type": "paragraph",
+            "variant": "lead",
+            "text": "Este guia vai te mostrar exatamente como fazer isso."
+          }
+        ]
       },
       {
         "number": 2,
