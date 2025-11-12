@@ -21,13 +21,26 @@ const BookCard = ({ book }) => {
     >
       <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-200 border border-gray-200 dark:border-gray-700">
         {/* Book Cover */}
-        <div className="relative aspect-[3/4] overflow-hidden bg-gray-100 dark:bg-gray-700">
-          <img
-            src={book.cover}
-            alt={book.title}
-            className="w-full h-full object-cover"
-            loading="lazy"
-          />
+        <div className="relative aspect-[3/4] overflow-hidden bg-gradient-to-br from-indigo-600 via-blue-600 to-indigo-700 dark:from-indigo-900 dark:via-blue-900 dark:to-indigo-950">
+          {book.cover ? (
+            <img
+              src={book.cover}
+              alt={book.title}
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center p-6">
+              <div className="text-center">
+                <div className="mb-4">
+                  <BookOpen className="w-16 h-16 text-white/90 mx-auto" />
+                </div>
+                <h3 className="text-white font-serif font-bold text-lg leading-tight line-clamp-4">
+                  {book.title}
+                </h3>
+              </div>
+            </div>
+          )}
 
           {/* Progress Bar - Material Design */}
           {isUnlocked && progressPercentage > 0 && (
