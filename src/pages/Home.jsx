@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Search, Filter } from 'lucide-react';
+import { Search } from 'lucide-react';
 import BookCard from '../components/BookCard';
 import booksData from '../data/books.json';
 
@@ -24,8 +24,7 @@ const Home = () => {
     return booksData.filter(book => {
       const matchesSearch =
         book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        book.description.toLowerCase().includes(searchTerm.toLowerCase());
+        book.author.toLowerCase().includes(searchTerm.toLowerCase());
 
       const matchesGenre = selectedGenre === 'all' || book.genre === selectedGenre;
       const matchesLanguage = selectedLanguage === 'all' || book.language === selectedLanguage;
@@ -35,51 +34,32 @@ const Home = () => {
   }, [searchTerm, selectedGenre, selectedLanguage]);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Hero Section */}
-      <div className="bg-gradient-to-r from-primary-600 to-primary-800 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Bem-vindo à BiblioTech
-          </h1>
-          <p className="text-xl text-primary-100 max-w-2xl">
-            Uma biblioteca digital moderna. Leia seus livros favoritos diretamente no navegador.
-          </p>
-        </div>
-      </div>
-
-      {/* Search and Filters */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8">
-        <div className="card space-y-4">
-          {/* Search Bar */}
+    <div className="min-h-screen bg-white dark:bg-primary-900 transition-colors">
+      {/* Header - Minimal */}
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-16 pb-12">
+        <div className="max-w-2xl mx-auto text-center space-y-8">
+          {/* Search Bar - Prominent */}
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-primary-400 dark:text-primary-500 w-5 h-5" />
             <input
               type="text"
-              placeholder="Buscar por título, autor ou descrição..."
+              placeholder="Buscar livros..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="input pl-10"
+              className="w-full pl-12 pr-4 py-4 bg-primary-50 dark:bg-primary-800 border-0 rounded-full text-primary-900 dark:text-white placeholder-primary-400 dark:placeholder-primary-500 focus:outline-none focus:ring-2 focus:ring-accent-500 transition-all text-lg font-light"
             />
           </div>
 
-          {/* Filters */}
-          <div className="flex flex-wrap gap-4">
-            <div className="flex items-center space-x-2">
-              <Filter className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                Filtros:
-              </span>
-            </div>
-
+          {/* Filters - Subtle */}
+          <div className="flex justify-center gap-3">
             <select
               value={selectedGenre}
               onChange={(e) => setSelectedGenre(e.target.value)}
-              className="input py-2 w-auto"
+              className="px-4 py-2 bg-transparent border border-primary-200 dark:border-primary-700 rounded-full text-sm text-primary-700 dark:text-primary-300 focus:outline-none focus:border-accent-500 transition-colors cursor-pointer"
             >
               {genres.map(genre => (
                 <option key={genre} value={genre}>
-                  {genre === 'all' ? 'Todos os Gêneros' : genre}
+                  {genre === 'all' ? 'Gênero' : genre}
                 </option>
               ))}
             </select>
@@ -87,35 +67,30 @@ const Home = () => {
             <select
               value={selectedLanguage}
               onChange={(e) => setSelectedLanguage(e.target.value)}
-              className="input py-2 w-auto"
+              className="px-4 py-2 bg-transparent border border-primary-200 dark:border-primary-700 rounded-full text-sm text-primary-700 dark:text-primary-300 focus:outline-none focus:border-accent-500 transition-colors cursor-pointer"
             >
               {languages.map(lang => (
                 <option key={lang} value={lang}>
-                  {lang === 'all' ? 'Todos os Idiomas' : lang}
+                  {lang === 'all' ? 'Idioma' : lang}
                 </option>
               ))}
             </select>
           </div>
-
-          {/* Results Count */}
-          <div className="text-sm text-gray-600 dark:text-gray-400">
-            {filteredBooks.length} {filteredBooks.length === 1 ? 'livro encontrado' : 'livros encontrados'}
-          </div>
         </div>
       </div>
 
-      {/* Books Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      {/* Books Grid - Generous spacing */}
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
         {filteredBooks.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-8">
             {filteredBooks.map(book => (
               <BookCard key={book.id} book={book} />
             ))}
           </div>
         ) : (
-          <div className="text-center py-12">
-            <p className="text-gray-500 dark:text-gray-400 text-lg">
-              Nenhum livro encontrado com os filtros selecionados.
+          <div className="text-center py-20">
+            <p className="text-primary-400 dark:text-primary-500 text-base font-light">
+              Nenhum livro encontrado
             </p>
           </div>
         )}

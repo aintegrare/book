@@ -1,40 +1,41 @@
 import { Link } from 'react-router-dom';
-import { Moon, Sun, BookOpen, Key } from 'lucide-react';
+import { Moon, Sun, Lock } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 
 const Navbar = () => {
   const { isDark, toggleTheme } = useTheme();
 
   return (
-    <nav className="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className="sticky top-0 z-50 bg-white dark:bg-primary-900 shadow-material-2 transition-all duration-300">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 text-xl font-bold text-primary-600 dark:text-primary-400">
-            <BookOpen className="w-8 h-8" />
-            <span>BiblioTech</span>
+          {/* Logo - Typography only, minimal */}
+          <Link
+            to="/"
+            className="font-serif text-2xl font-light text-primary-900 dark:text-white tracking-wide hover:text-accent-600 dark:hover:text-accent-400 transition-colors duration-200"
+          >
+            Bibliotecnologia
           </Link>
 
-          {/* Nav Links */}
-          <div className="flex items-center space-x-4">
+          {/* Actions - Icons only */}
+          <div className="flex items-center space-x-2">
             <Link
               to="/access"
-              className="flex items-center space-x-2 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              className="p-2.5 rounded-full hover:bg-primary-50 dark:hover:bg-primary-800 transition-colors duration-200 group"
+              aria-label="Acessar com código"
             >
-              <Key className="w-5 h-5" />
-              <span className="hidden sm:inline">Acessar Livro</span>
+              <Lock className="w-5 h-5 text-primary-700 dark:text-primary-200 group-hover:text-accent-600 dark:group-hover:text-accent-400 transition-colors" />
             </Link>
 
-            {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              aria-label="Toggle theme"
+              className="p-2.5 rounded-full hover:bg-primary-50 dark:hover:bg-primary-800 transition-colors duration-200 group"
+              aria-label="Alternar tema"
             >
               {isDark ? (
-                <Sun className="w-5 h-5 text-yellow-500" />
+                <Sun className="w-5 h-5 text-accent-400 group-hover:text-accent-500 transition-colors" />
               ) : (
-                <Moon className="w-5 h-5 text-gray-700" />
+                <Moon className="w-5 h-5 text-primary-700 group-hover:text-primary-900 transition-colors" />
               )}
             </button>
           </div>
