@@ -1,20 +1,31 @@
 import { Link } from 'react-router-dom';
 import { Moon, Sun, Lock } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
+import { useCompany } from '../contexts/CompanyContext';
 
 const Navbar = () => {
   const { isDark, toggleTheme } = useTheme();
+  const { currentCompany } = useCompany();
 
   return (
     <nav className="sticky top-0 z-50 bg-white dark:bg-primary-900 shadow-material-2 transition-all duration-300">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo - Typography only, minimal */}
+          {/* Logo - Typography or Company Logo */}
           <Link
             to="/"
-            className="font-serif text-2xl font-light text-primary-900 dark:text-white tracking-wide hover:text-accent-600 dark:hover:text-accent-400 transition-colors duration-200"
+            className="flex items-center space-x-3 group"
           >
-            Bibliotecnologia
+            {currentCompany?.logo && (
+              <img
+                src={currentCompany.logo}
+                alt={currentCompany.name}
+                className="w-10 h-10 rounded-lg object-cover shadow-material-1"
+              />
+            )}
+            <span className="font-serif text-2xl font-light text-primary-900 dark:text-white tracking-wide group-hover:text-accent-600 dark:group-hover:text-accent-400 transition-colors duration-200">
+              {currentCompany?.brandName || 'Bibliotecnologia'}
+            </span>
           </Link>
 
           {/* Actions - Icons only */}

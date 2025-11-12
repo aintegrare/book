@@ -1,0 +1,118 @@
+[
+  {
+    "id": "editora-exemplo",
+    "slug": "editora-exemplo",
+    "name": "Editora Exemplo",
+    "brandName": "Biblioteca Exemplo",
+    "logo": "https://images.unsplash.com/photo-1568667256549-094345857637?w=200&h=200&fit=crop",
+    "description": "Biblioteca digital da Editora Exemplo - Acesso exclusivo para parceiros e colaboradores",
+    "colors": {
+      "primary": {
+        "50": "#FFF3E0",
+        "100": "#FFE0B2",
+        "200": "#FFCC80",
+        "300": "#FFB74D",
+        "400": "#FFA726",
+        "500": "#FF9800",
+        "600": "#FB8C00",
+        "700": "#F57C00",
+        "800": "#EF6C00",
+        "900": "#E65100"
+      },
+      "accent": {
+        "50": "#E8F5E9",
+        "100": "#C8E6C9",
+        "200": "#A5D6A7",
+        "300": "#81C784",
+        "400": "#66BB6A",
+        "500": "#4CAF50",
+        "600": "#43A047",
+        "700": "#388E3C",
+        "800": "#2E7D32",
+        "900": "#1B5E20"
+      }
+    },
+    "books": ["DC2025"],
+    "contact": {
+      "email": "contato@editora-exemplo.com",
+      "phone": "+55 11 1234-5678"
+    }
+  },
+  {
+    "id": "tech-books",
+    "slug": "tech-books",
+    "name": "TechBooks Inc",
+    "brandName": "TechBooks Library",
+    "logo": "https://images.unsplash.com/photo-1633409361618-c73427e4e206?w=200&h=200&fit=crop",
+    "description": "Acervo técnico exclusivo para desenvolvedores e engenheiros",
+    "colors": {
+      "primary": {
+        "50": "#E3F2FD",
+        "100": "#BBDEFB",
+        "200": "#90CAF9",
+        "300": "#64B5F6",
+        "400": "#42A5F5",
+        "500": "#2196F3",
+        "600": "#1E88E5",
+        "700": "#1976D2",
+        "800": "#1565C0",
+        "900": "#0D47A1"
+      },
+      "accent": {
+        "50": "#F3E5F5",
+        "100": "#E1BEE7",
+        "200": "#CE93D8",
+        "300": "#BA68C8",
+        "400": "#AB47BC",
+        "500": "#9C27B0",
+        "600": "#8E24AA",
+        "700": "#7B1FA2",
+        "800": "#6A1B9A",
+        "900": "#4A148C"
+      }
+    },
+    "books": ["ALICE123"],
+    "contact": {
+      "email": "library@techbooks.com",
+      "website": "https://techbooks.com"
+    }
+  },
+  {
+    "id": "literatura-classica",
+    "slug": "literatura-classica",
+    "name": "Clássicos Universais",
+    "brandName": "Acervo Clássicos",
+    "logo": "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=200&h=200&fit=crop",
+    "description": "Literatura clássica mundial em português",
+    "colors": {
+      "primary": {
+        "50": "#ECEFF1",
+        "100": "#CFD8DC",
+        "200": "#B0BEC5",
+        "300": "#90A4AE",
+        "400": "#78909C",
+        "500": "#607D8B",
+        "600": "#546E7A",
+        "700": "#455A64",
+        "800": "#37474F",
+        "900": "#263238"
+      },
+      "accent": {
+        "50": "#FFF8E1",
+        "100": "#FFECB3",
+        "200": "#FFE082",
+        "300": "#FFD54F",
+        "400": "#FFCA28",
+        "500": "#FFC107",
+        "600": "#FFB300",
+        "700": "#FFA000",
+        "800": "#FF8F00",
+        "900": "#FF6F00"
+      }
+    },
+    "books": ["KAFKA99"],
+    "contact": {
+      "email": "acervo@classicos.com.br"
+    }
+  }
+]
